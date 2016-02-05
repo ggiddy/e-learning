@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base href="/">
+        <title>e-learnig</title>
+        
+        <!--Stylesheets-->
+        <link rel="stylesheet" href="/stylesheets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/stylesheets/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/stylesheets/css/style.css">
+        
+        <script src="/stylesheets/js/jquery.min.js"></script>
+        <script src="/stylesheets/js/bootstrap.min.js"></script>
+        
+        
+        <!--Socket.io file-->
+        <script src="/socket.io/socket.io.js"></script>
+        
+        <!--AngularJs files-->
+        <script src="/javascripts/angular/angular.min.js"></script>
+        <script src="/javascripts/angular/angular-route.min.js"></script>
+        
+        <!--Custom files-->
+        <script src="/javascripts/myApp.js"></script>
+        
+        <!--Services-->
+        <script src="/javascripts/services/authService.js"></script>
+        <script src="/javascripts/services/userService.js"></script>
+        
+        
+        <!--Controllers-->
+        <script src="/javascripts/controllers/mainCtrl.js"></script>
+        <script src="/javascripts/controllers/userCtrl.js"></script>
+        
+        
+        <!--Directives-->
+        <script src="/javascripts/directives/reverseDirective.js"></script>
+        
+        <!--Routes-->
+        <script src="/javascripts/app.routes.js"></script>
+        
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body ng-app="myApp">
+        <header>
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="container-fluid">
+                  <!-- Brand and toggle get grouped for better mobile display -->
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-book"> e-learning</span></a>
+                  </div>
+
+                  <!-- Collect the nav links, forms, and other content for toggling -->
+                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Signup <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#" data-toggle="modal" data-target="#adminSignupForm">Admin Signup</a></li>
+                          <li class="divider"></li>
+                          <li><a href="#" data-toggle="modal" data-target="#studentSignupForm">Student Signup</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Login <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#" data-toggle="modal" data-target="#studentLoginForm">Student Login</a></li>
+                          <li class="divider"></li>
+                          <li><a href="#" data-toggle="modal" data-target="#instructorLoginForm">Instructor Login</a></li>
+                          <li class="divider"></li>
+                          <li><a href="#" data-toggle="modal" data-target="#adminLoginForm">Admin Login</a></li>
+                          <li class="divider"></li>
+                          <li><a href="" data-toggle="modal" data-target="#expertLoginForm">Expert Login</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+              </nav>
+        </header>
+        <main class="container tpad">
+            <div ng-view>
+            
+            </div>
+        </main>
+       
+        <!--Modal that carries the admin sign up form-->
+        <div ng-controller="createAdminController" class="modal fade" id="adminSignupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" id="myModalLabel">Signup</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="signUpAdmin()">
+                                    First Name<input type="text" name="first_name" ng-model="userData.first_name" class="form-control"><br/>
+                                    Last Name<input type="text" name="last_name" ng-model="userData.last_name" class="form-control"><br/>
+                                    Email Address<input type="text" name="email_address" ng-model="userData.email_address" class="form-control"><br/>
+                                    Password<input type="password" name="password" ng-model="userData.password" class="form-control"><br/>
+                                    <button type="submit" id="submitBtn" class="btn btn-danger">Signup</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+            <script>
+                $('#submitBtn').click(function(){ $('#adminSignupForm').modal('hide'); });
+            </script>
+        </div>
+        
+        
+        <!--Modal that contains the admin login up form-->
+        <div ng-controller="mainController" class="modal fade" id="adminLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" >Login</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="adminLogin()">
+                                    Email Address<input type="text" name="email_address" ng-model="email_address" class="form-control" placeholder="example@gmail.com"><br/>
+                                    Password<input type="password" name="password" ng-model="password" class="form-control"><br/>
+                                    <button type="submit" id="loginBtn" class="btn btn-success">Login</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+            <script>
+                $('#loginBtn').click(function(){ $('#adminLoginForm').modal('hide'); });
+            </script>
+        </div>
+         
+         
+        <!--Modal that contains the student signup form-->
+        <div class="modal fade" id="studentSignupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" id="myModalLabel">Signup</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="signUpUser()">
+                                    First Name<input type="text" name="first_name" ng-model="userData.first_name" class="form-control"><br/>
+                                    Last Name<input type="text" name="last_name" ng-model="userData.last_username" class="form-control"><br/>
+                                    Email Address<input type="text" name="email_address" ng-model="userData.password" class="form-control"><br/>
+                                    Admission no.<input type="text" name="admission_no" ng-model="userData.password" class="form-control"><br/>
+                                    Faculty<input type="text" name="faculty" ng-model="userData.password" class="form-control"><br/>
+                                    Password<input type="password" name="password" ng-model="userData.name" class="form-control"><br/>
+                                    <button type="submit" class="btn btn-danger" data-dismiss="modal">Signup</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+        </div>
+                  
+        <!--Modal that contains the student login up form-->
+        <div ng-controller="mainController" class="modal fade" id="studentLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" >Login</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="studentLogin()">
+                                    Admission no.<input type="text" name="admission_no" ng-model="admission_no" class="form-control"><br/>
+                                    Password<input type="password" name="password" ng-model="password" class="form-control"><br/>
+                                    <button type="submit" id="loginBtnStud" class="btn btn-success">Login</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+            <script>
+                $('#loginBtnStud').click(function(){ $('#studentLoginForm').modal('hide'); });
+            </script>
+        </div>
+        
+        <!--Modal that contains the instructor signup form-->
+        <div class="modal fade" id="instructorSignupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" id="myModalLabel">Signup</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="signUpUser()">
+                                    First Name<input type="text" name="first_name" ng-model="userData.first_name" class="form-control"><br/>
+                                    Last Name<input type="text" name="last_name" ng-model="userData.last_username" class="form-control"><br/>
+                                    Email Address<input type="text" name="email_address" ng-model="userData.password" class="form-control"><br/>
+                                    Password<input type="password" name="password" ng-model="userData.name" class="form-control"><br/>
+                                    <button type="submit" class="btn btn-danger" data-dismiss="modal">Signup</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+        </div>
+        
+        
+        <!--Modal that contains the instructor login up form-->
+        <div class="modal fade" id="instructorLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" >Login</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="signUpUser()">
+                                    Email Address<input type="text" name="email_address" ng-model="userData.password" class="form-control"><br/>
+                                    Password<input type="password" name="password" ng-model="userData.name" class="form-control"><br/>
+                                    <button type="submit" id="loginBtn" class="btn btn-success" data-dismiss="modal">Login</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+            <script>
+                $('#loginBtn').click(function(){ $('#instructorLoginForm').modal('hide'); });
+            </script>
+        </div>
+        
+        
+        <!--Modal that contains the expert signup form-->
+        <div class="modal fade" id="expertSignupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" id="myModalLabel">Signup</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="signUpUser()">
+                                    First Name<input type="text" name="first_name" ng-model="userData.first_name" class="form-control"><br/>
+                                    Last Name<input type="text" name="last_name" ng-model="userData.last_username" class="form-control"><br/>
+                                    Email Address<input type="text" name="email_address" ng-model="userData.password" class="form-control"><br/>
+                                    Password<input type="password" name="password" ng-model="userData.name" class="form-control"><br/>
+                                    <button type="submit" class="btn btn-danger" data-dismiss="modal">Signup</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+        </div>
+        
+        
+        <!--Modal that contains the instructor login up form-->
+        <div class="modal fade" id="expertLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" >Login</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="signUpUser()">
+                                    Email Address<input type="text" name="email_address" ng-model="userData.password" class="form-control"><br/>
+                                    Password<input type="password" name="password" ng-model="userData.name" class="form-control"><br/>
+                                    <button type="submit" id="loginBtn" class="btn btn-success" data-dismiss="modal">Login</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+            <script>
+                $('#loginBtn').click(function(){ $('#expertLoginForm').modal('hide'); });
+            </script>
+        </div>
+    </body>
+</html>

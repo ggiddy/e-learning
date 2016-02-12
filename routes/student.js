@@ -2,12 +2,12 @@
 
 var express = require('express');
 var router = express.Router();
-var access = require('./access_middleware');
+var access = require('./access_middleware')();
 var Student = require('../models/student');
 var auth = require('./authenticate');
 
 //middleware to confirm it is student calling these routes
-router.use(access);
+router.use('/access', access);
 
 module.exports = function(){
     

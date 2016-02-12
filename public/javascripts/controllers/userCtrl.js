@@ -34,7 +34,7 @@ userCtrl.controller('createStudentController', function($scope, $location, $wind
     };
 });
 
-userCtrl.controller('createInstructorController', function($scope, $location, $window, User){
+userCtrl.controller('createInstructorController', function($scope, $location, User){
     
     $scope.userData = {first_name: '', last_name: '', email_address: '', password: '', faculty: '', user_type: 'instructor'};
     $scope.message = '';
@@ -43,26 +43,24 @@ userCtrl.controller('createInstructorController', function($scope, $location, $w
         User.createInstructor($scope.userData).success(function(data){
             $scope.userData = {first_name: '', last_name: '', email_address: '', password: '', faculty: '', user_type: 'instructor'};
             $scope.message = data.message;
-            $window.localStorage.setItem('token', data.token);
             
-            return $location.path('/instructor');
+            return $location.path('/instructors');
         });
     };
 });
 
 
-userCtrl.controller('createExpertController', function($scope, $location, $window, User){
+userCtrl.controller('createExpertController', function($scope, $location, User){
     
-    $scope.userData = {first_name: '', last_name: '', email_address: '', password: '', specialty: '', user_type: 'instructor'};
+    $scope.userData = {first_name: '', last_name: '', email_address: '', password: '', specialty: '', user_type: 'expert'};
     $scope.message = '';
     
-    $scope.signUpInstructor = function(){
-        User.createInstructor($scope.userData).success(function(data){
+    $scope.signUpExpert = function(){
+        User.createExpert($scope.userData).success(function(data){
             $scope.userData = {first_name: '', last_name: '', email_address: '', password: '', specialty: '', user_type: 'instructor'};
             $scope.message = data.message;
-            $window.localStorage.setItem('token', data.token);
             
-            return $location.path('/instructor');
+            return $location.path('/experts');
         });
     };
 });

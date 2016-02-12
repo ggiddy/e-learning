@@ -21,13 +21,13 @@ userService.factory('User', function($http){
     };
     
     /**
-     * This function creates a admin account.
+     * This function creates an admin account.
      * 
      * @param {object} userData
      * @returns {object}
      */
     userFactory.createAdmin = function(userData){
-        return $http.post('/auth/admin/signup', userData);
+        return $http.post('/admin/admin/signup', userData);
     };
     
     /**
@@ -37,7 +37,7 @@ userService.factory('User', function($http){
      * @returns {object}
      */
     userFactory.createInstructor = function(userData){
-        return $http.post('/auth/instructor/signup', userData);
+        return $http.post('/admin/instructor/signup', userData);
     };
     
     /**

@@ -8,7 +8,8 @@ var jwt = require('jsonwebtoken');
 var config = require('../config');
 var secretKey = config.secretKey;
 
-module.exports = function(req, res, next){
+module.exports = function(){
+    router.post('/', function(req, res, next){
         var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
         if(token){
@@ -18,16 +19,29 @@ module.exports = function(req, res, next){
                 }
 
                 req.decoded = decoded;
-      
+
                 next();
             });
         } else {
             return res.status(403).send({success: false, message: 'No token provided'});
         }
-    };
+    });
+    
+    router.get('/me', function(req, res){
+        var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
-router.get('/me', function(req, res){
-    return res.json(req.decoded);
-});
-
-module.exports = router;
+        if(token){
+            jwt.verify(token, secretKey, function(err, decoded){
+                if(err){
+                    return res.json({success: false, message: 'Failed to authenticate user'});
+                }
+                req.decoded = decoded;
+                return res.json(req.decoded);
+            });
+        } else {  
+            return res.json({message: 'No token provided'});
+        }
+    });
+    
+    return router;
+};

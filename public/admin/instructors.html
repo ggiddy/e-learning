@@ -1,0 +1,301 @@
+<div class="container">
+
+      <div class="row row-offcanvas row-offcanvas-right">
+
+        <div class="col-xs-12 col-sm-9">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+          </p>
+          <p><button data-toggle="modal" data-target="#instructorSignupForm" class="btn btn-sm btn-success">{{"Add New Instructor"}}</button></p>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email Address</th>
+                  <th>Status</th>
+                  <th>Reset Password</th>
+                  <th>Archive</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="instructor in instructors"> 
+                  <td>{{instructor.first_name}}</td>
+                  <td>{{instructor.last_name}}</td>
+                  <td>{{instructor.email_address}}</td>
+                  <td><button class="btn btn-sm btn-info">{{"Active"}}</button></td>
+                  <td><button class="btn btn-sm btn-default">{{"Reset Password"}}</button></td>
+                  <td><a href="" class="btn btn-sm btn-danger" ng-click="">Archive</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div><!--/span-->
+
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+          <div class="list-group">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-info">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                          <span class="glyphicon glyphicon-user"></span> Profile
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-body">
+      
+                        <div class="row profile">
+                        <div class="col-md-11">
+                          <div class="profile-sidebar">
+                            <!-- SIDEBAR USERPIC -->
+                            <div class="profile-userpic">
+                                <img src="/images/admin/giddy.jpg" class="img-responsive" alt="<span class='glyphicon glyphicon-user'></span>">
+                            </div>
+                            <!-- END SIDEBAR USERPIC -->
+                            <!-- SIDEBAR USER TITLE -->
+                            <div class="profile-usertitle">
+                              <div class="profile-usertitle-name"><br/>
+                                {{ 'Gideon Gitau' }}
+                              </div><br/>
+                              <div class="text-center">
+                                  <a class="btn btn-xs btn-danger">Admin</a>
+                              </div>
+                            </div>
+                            <!-- END SIDEBAR USER TITLE -->
+                            
+                            <!-- SIDEBAR MENU -->
+                            <div class="profile-usermenu">
+                              <ul class="nav">
+                                <li class="active">
+                                  <a href="#">
+                                  <i class="glyphicon glyphicon-home"></i>
+                                  Overview </a>
+                                </li>
+                                <li>
+                                  <a href="" data-toggle='modal' data-target='#accountSettings'>
+                                  <i class="glyphicon glyphicon-user"></i>
+                                  Account Settings </a>
+                                </li>
+                                <li>
+                                  <a href="" target="_blank">
+                                  <i class="glyphicon glyphicon-ok"></i>
+                                  Tasks </a>
+                                </li>
+                                <li>
+                                  <a href="">
+                                  <i class="glyphicon glyphicon-flag"></i>
+                                  Help </a>
+                                </li>
+                              </ul>
+                            </div>
+                            <!-- END MENU -->
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="panel panel-info">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+                          <span class="glyphicon glyphicon-book"></span> Classes
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                      <ul class="nav">
+                        <li class="active">
+                          <a href="" data-toggle='modal' data-target='#newClass'>
+                          <i class="glyphicon glyphicon-plus"></i>
+                          New Class </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel panel-info">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree">
+                          <span class="glyphicon glyphicon-user"></span> Users
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseThree" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <ul class="nav">
+                                <li class="active">
+                                    <a href="#/admins">
+                                  <i class="glyphicon glyphicon-wrench"></i>
+                                  Admins </a>
+                                </li>
+                                <li>
+                                  <a href="#/instructors">
+                                  <i class="glyphicon glyphicon-bullhorn"></i>
+                                  Instructors </a>
+                                </li>
+                                <li>
+                                  <a href="#/experts">
+                                  <i class="glyphicon glyphicon-globe"></i>
+                                  Experts </a>
+                                </li>
+                                <li>
+                                  <a href="#/students">
+                                  <i class="glyphicon glyphicon-book"></i>
+                                  Students </a>
+                                </li>
+                              </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div><!--/span-->
+      </div><!--/row-->
+    </div><!--/.container-->
+
+    <!--Modal that contains the form to edit class details-->
+        <div ng-controller="adminController" class="modal fade" id="editClassForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" id="myModalLabel">Edit Class</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="signUpAdmin()">
+                                    Class Code<input type="text" name="class_code" ng-model="userData.class_code" class="form-control"><br/>
+                                    Class Name<input type="text" name="class_name" ng-model="userData.last_name" class="form-control"><br/>
+                                    Class Duration<input type="text" name="class_duration" ng-model="userData.email_address" class="form-control"><br/>
+                                    Start-time<input type="type" name="class_time" ng-model="userData.password" class="form-control"><br/>
+                                    Lecturer<input type="password" name="password" ng-model="userData.password" class="form-control"><br/>
+                                    <button type="submit" id="submitBtn" class="btn btn-danger">Submit</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+            <script>
+                //triggered when modal is about to be shown
+                $('#editClassForm').on('show.bs.modal', function(e) {
+
+                    //get data-id attribute of the clicked element
+                    var classId = $(e.relatedTarget).data('id');
+                    
+                    //populate the textbox
+                    $(e.currentTarget).find('input[name="class_code"]').val(classId.class_code);
+                    $(e.currentTarget).find('input[name="class_name"]').val(classId.class_name);
+                    $(e.currentTarget).find('input[name="class_duaration"]').val(classId.class_duration);
+                    $(e.currentTarget).find('input[name="class_time"]').val(classId.class_time);
+                });
+                
+                $('#submitBtn').click(function(){ $('#editClassForm').modal('hide'); });
+            </script>
+        </div>
+    
+    <!--Modal that contains the form to add a new class-->
+        <div ng-controller="adminController" class="modal fade" id="newClass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" id="myModalLabel">New Class</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="newClass()">
+                                    Class Code<input type="text" name="class_code" ng-model="classData.class_code" class="form-control"><br/>
+                                    Class Name<input type="text" name="class_name" ng-model="classData.class_name" class="form-control"><br/>
+                                    Class Duration<input type="text" name="class_duration" ng-model="classData.class_duration" class="form-control"><br/>
+                                    Start-time<input type="type" name="class_time" ng-model="classData.class_time" class="form-control"><br/>
+                                    Class Venue<input type="text" name="class_venue" ng-model="classData.class_venue" class="form-control"><br/>
+                                    <button type="submit" id="submitClassBtn" class="btn btn-danger">Submit</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+            <script>
+                $('#submitClassBtn').click(function(){ $('#newClass').modal('hide'); });
+            </script>
+        </div>
+    
+    
+    <!--Modal that contains the form to edit account settings-->
+        <div ng-controller="adminController" class="modal fade" id="accountSettings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" id="myModalLabel">Account Settings</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="signUpStudent()">
+                                    First Name<input type="text" name="first_name" ng-model="userData.first_name" class="form-control"><br/>
+                                    Last Name<input type="text" name="last_name" ng-model="userData.last_name" class="form-control"><br/>
+                                    Email Address<input type="text" name="email_address" ng-model="userData.email_address" class="form-control"><br/>
+                                    Admission no.<input type="text" name="admission_no" ng-model="userData.admission_no" class="form-control"><br/>
+                                    Faculty<input type="text" name="faculty" ng-model="userData.faculty" class="form-control"><br/>
+                                    Password<input type="password" name="password" ng-model="userData.password" class="form-control"><br/>
+                                    <button type="submit" id="submitChangesBtn" class="btn btn-danger">Signup</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+            <script>
+                $('#submitChangesBtn').click(function(){ $('#accountSettings').modal('hide'); });
+            </script>
+        </div>
+    
+    <!--Modal that carries the instructor sign up form-->
+        <div ng-controller="createInstructorController" class="modal fade" id="instructorSignupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" id="myModalLabel">Signup</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="signUpInstructor()">
+                                    First Name<input type="text" name="first_name" ng-model="userData.first_name" class="form-control"><br/>
+                                    Last Name<input type="text" name="last_name" ng-model="userData.last_name" class="form-control"><br/>
+                                    Email Address<input type="text" name="email_address" ng-model="userData.email_address" class="form-control"><br/>
+                                    Faculty<input type="text" name="faculty" ng-model="userData.faculty" class="form-control"><br/>
+                                    Password<input type="password" name="password" ng-model="userData.password" class="form-control"><br/>
+                                    <button type="submit" id="submitInstructorBtn" class="btn btn-danger">Signup</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+            <script>
+                $('#submitInstructorBtn').click(function(){ $('#instructorSignupForm').modal('hide'); });
+            </script>
+        </div>

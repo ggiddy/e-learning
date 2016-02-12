@@ -30,7 +30,6 @@ router.post('/student/signup', function(req, res) {
     student.email_address = req.body.email_address.toLowerCase();
     student.user_type = req.body.user_type;
     student.faculty = req.body.faculty;
-    student.course = req.body.course;
     student.admission_no = req.body.admission_no;
     
     var token = createToken(student);
@@ -47,54 +46,7 @@ router.post('/student/signup', function(req, res) {
     });
 });
 
-//This route signs up an admin into the database
-router.post('/admin/signup', function(req, res) {
-    var admin = new Admin();
-    admin.first_name = req.body.first_name;
-    admin.last_name = req.body.last_name;
-    admin.password = createHash(req.body.password);
-    admin.email_address = req.body.email_address.toLowerCase();
-    admin.user_type = req.body.user_type;
-  
-    var token = createToken(admin);
-    
-    admin.save(function(err){
-        if(err){
-            return res.send(err);
-        }
-        return res.json({
-            success: true, 
-            message: 'New admin ' + admin.email_address + ' has been created.', 
-            token: token
-        });
-    });
-});
-
-//This route signs up an instructor to the system
-router.post('/instructor/signup', function(req, res) {
-    var instructor = new Instructor();
-    instructor.first_name = req.body.first_name;
-    instructor.last_name = req.body.last_name;
-    instructor.password = createHash(req.body.password);
-    instructor.email_address = req.body.email_address.toLowerCase();
-    instructor.user_type = req.body.user_type;
-    instructor.faculty = req.body.faculty;
-    
-    var token = createToken(instructor);
-    
-    instructor.save(function(err){
-        if(err){
-            return res.send(err);
-        }
-        return res.json({
-            success: true, 
-            message: 'New instructor ' +instructor.email_address + ' has been created.', 
-            token: token
-        });
-    });
-});
-
-//This route signs up an instructor to the system
+//This route signs up an expert to the system
 router.post('/expert/signup', function(req, res) {
     var expert = new Expert();
     expert.first_name = req.body.first_name;
@@ -125,7 +77,7 @@ router.post('/expert/signup', function(req, res) {
 /* This route logs in a student into the system */
 router.post('/student/login', function(req,res){
     Student.findOne({admission_no: req.body.admission_no})
-            .select('admission_no password')
+            .select('email_address admission_no password')
             .exec(function(err, student){
         if(err){
             return res.send(err);
@@ -144,7 +96,7 @@ router.post('/student/login', function(req,res){
         
         return res.json({
             success: true, 
-            username: student.admission_no, 
+            email_address: student.email_address, 
             token: token
         });
     });
@@ -274,9 +226,8 @@ var createHash = function(password){
  */
 var createToken = function(user){
     var token = jwt.sign({
-        loginTime: Date.now(), 
-        id: user._id, 
-        username: user.email_address
+        email_address: user.email_address,
+        loginTime: Date.now()
     }, secretKey, {expiresIn: 86400});
     
     return token;

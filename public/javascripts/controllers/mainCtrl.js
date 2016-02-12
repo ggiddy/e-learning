@@ -3,15 +3,16 @@
 var mainCtrl = angular.module('mainCtrl', ['authService']);
 
 mainCtrl.controller('mainController', function($scope, $rootScope, $location, Auth){
-    $rootScope.user = {username: '', id: ''};
+    $rootScope.user = {email_address: '', id: ''};
     $rootScope.loggedIn = Auth.isLoggedIn();
     
     $rootScope.$on('$routeChangeStart', function(){
         $rootScope.loggedIn = Auth.isLoggedIn();
         
-        Auth.getUser(function(data){
-            $rootScope.user.username = data.username;
+        Auth.getUser().success(function(data){
+            $rootScope.user.email_address = data.email_address;
             $rootScope.user.id = data.id;
+            $rootScope.user.admin = false;
         });
     });
     
@@ -24,8 +25,9 @@ mainCtrl.controller('mainController', function($scope, $rootScope, $location, Au
         $scope.error = '';
         Auth.loginAdmin($scope.email_address, $scope.password).success(function(data){
             Auth.getUser().success(function(data){
-                $rootScope.user.username = data.email_address;
+                $rootScope.user.email_address = data.email_address;
                 $rootScope.user.id = data.id;
+                $rootScope.user.admin = true;
             });
             if(data.success){
                 return $location.path('/admin');
@@ -43,8 +45,8 @@ mainCtrl.controller('mainController', function($scope, $rootScope, $location, Au
     $scope.studentLogin = function(){
         $scope.error = '';
         Auth.loginStudent($scope.admission_no, $scope.password).success(function(data){
-            Auth.getUser(function(data){
-                $rootScope.user.username = data.email_address;
+            Auth.getUser().success(function(data){
+                $rootScope.user.email_address = data.email_address;
                 $rootScope.user.id = data.id;
             });
             if(data.success){
@@ -64,7 +66,7 @@ mainCtrl.controller('mainController', function($scope, $rootScope, $location, Au
         $scope.error = '';
         Auth.loginInstructor($scope.email_address, $scope.password).success(function(data){
             Auth.getUser().success(function(data){
-                $rootScope.user.username = data.email_address;
+                $rootScope.user.email_address = data.email_address;
                 $rootScope.user.id = data.id;
             });
             if(data.success){
@@ -84,7 +86,7 @@ mainCtrl.controller('mainController', function($scope, $rootScope, $location, Au
         $scope.error = '';
         Auth.loginExpert($scope.email_address, $scope.password).success(function(data){
             Auth.getUser().success(function(data){
-                $rootScope.user.username = data.email_address;
+                $rootScope.user.email_address = data.email_address;
                 $rootScope.user.id = data.id;
             });
             if(data.success){

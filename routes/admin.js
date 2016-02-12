@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 
 //other files
-var access = require('./access_middleware');
+var access = require('./access_middleware')();
 var auth = require('./authenticate');
 
 //models
@@ -16,7 +16,7 @@ var Expert = require('../models/expert');
 var Class = require('../models/class');
 
 //middleware to confirm it is admin calling these routes
-router.use(access);
+router.use('/access', access);
 
 //only admin can create, delete, edit classes
 module.exports = function(){
@@ -65,7 +65,7 @@ module.exports = function(){
             });
         })
 
-        //modify specified post
+        //modify specified class
         .put(function(req, res){
             Class.findById(req.params.id, function(err, the_class){
                 if(err){
@@ -98,7 +98,28 @@ module.exports = function(){
                 return res.json({success: true, message: 'Successfully deleted class'});
             });
         });
-        
+    
+    //This route signs up an admin into the database
+    router.post('/admin/signup', function(req, res) {
+        var admin = new Admin();
+        admin.first_name = req.body.first_name;
+        admin.last_name = req.body.last_name;
+        admin.password = auth.createHash(req.body.password);
+        admin.email_address = req.body.email_address.toLowerCase();
+        admin.user_type = req.body.user_type;
+
+        admin.save(function(err){
+            if(err){
+                return res.send(err);
+            }
+            return res.json({
+                success: true, 
+                message: 'New admin ' + admin.email_address + ' has been created.', 
+            });
+        });
+    });
+
+    
     //This route signs up an instructor to the system
     router.post('/instructor/signup', function(req, res) {
     var instructor = new Instructor();
@@ -110,8 +131,6 @@ module.exports = function(){
         instructor.classes_taught = req.body.classes_taught;
         instructor.faculty = req.body.faculty;
 
-        var token = auth.createToken(instructor);
-
         instructor.save(function(err){
             if(err){
                 return res.send(err);
@@ -119,7 +138,6 @@ module.exports = function(){
             return res.json({
                 success: true, 
                 message: 'New instructor: ' +instructor.email_address + ' has been created.', 
-                token: token
             });
         });
     });

@@ -19,7 +19,7 @@ var Class = require('../models/class');
 router.use('/access', access);
 
 //only admin can create, delete, edit classes
-module.exports = function(){
+module.exports = function(io){
     
     router.route('/class')
             //route to create a new class
@@ -112,6 +112,7 @@ module.exports = function(){
             if(err){
                 return res.send(err);
             }
+            io.emit('newadmin', admin);
             return res.json({
                 success: true, 
                 message: 'New admin ' + admin.email_address + ' has been created.', 
@@ -135,6 +136,7 @@ module.exports = function(){
             if(err){
                 return res.send(err);
             }
+            io.emit('newinstructor', instructor);
             return res.json({
                 success: true, 
                 message: 'New instructor: ' +instructor.email_address + ' has been created.', 
@@ -186,8 +188,156 @@ module.exports = function(){
            } 
            return res.json(experts);
         });
-    });    
+    }); 
     
+    /**
+     * Route used to change the password of an administrator
+     */
+    router.patch('/change_admin_pwd/', function(req, res){
+        
+        //first select the user with the specified id
+        Admin.findById(req.body.admin_id)
+        .select('password')
+        .exec(function(err, user){
+            if(err){
+                return res.status(500).send(err);
+            }
+            
+            //Check if old password matches 
+            if(!auth.isValidPassword(user, req.body.old_password)){
+                 return res.json({success: false, message: 'Old password incorrect'});
+            }
+            user.password = auth.createHash(req.body.new_password);
+            user.save(function(err){
+                if(err){
+                    return res.send(err);
+                }
+                return res.json({success: true, message: 'Password successfully updated'});
+            }); 
+        });
+            
+    });
+     
+    //admin
+    router.patch('/reset_admin_pwd/:id', function(req, res){
+        
+        //first select the user with the specified id
+        Admin.findById(req.params.id, function(err, admin){
+            if(err){
+                return res.status(500).send(err);
+            }
+            
+            var temp_password = '*' + admin.first_name.toLowerCase() + '#';
+            
+            admin.password = auth.createHash(temp_password);
+            admin.save(function(err){
+                if(err){
+                    return res.status(500).send(err);
+                }
+                return res.json({success: true, message: 'Successfully reset password'});
+            });
+        });
+    });
+  
+    
+    //instructor
+    router.patch('/reset_instructor_pwd/:id', function(req, res){
+        
+        //first select the user with the specified id
+        Instructor.findById(req.params.id, function(err, instructor){
+            if(err){
+                return res.status(500).send(err);
+            }
+            
+            var temp_password = '*' + instructor.first_name.toLowerCase() + '#';
+            
+            instructor.password = auth.createHash(temp_password);
+            instructor.save(function(err){
+                if(err){
+                    return res.status(500).send(err);
+                }
+            });
+            return res.json({success: true, message: 'Successfully reset password'});
+        });
+    });
+    
+    //student
+    router.patch('/reset_student_pwd/:id', function(req, res){
+        
+        //first select the user with the specified id
+        Student.findById(req.params.id, function(err, student){
+            if(err){
+                return res.status(500).send(err);
+            }
+            
+            var temp_password = '*' + student.first_name.toLowerCase() + '#';
+            
+            student.password = auth.createHash(temp_password);
+            student.save(function(err){
+                if(err){
+                    return res.status(500).send(err);
+                }
+            });
+            return res.json({success: true, message: 'Successfully reset password'});
+        });
+    });
+    
+    //expert
+    router.patch('/reset_expert_pwd/:id', function(req, res){
+        
+        //first select the user with the specified id
+        Expert.findById(req.params.id, function(err, expert){
+            if(err){
+                return res.status(500).send(err);
+            }
+            
+            var temp_password = '*' + expert.first_name.toLowerCase() + '#';
+            
+            expert.password = auth.createHash(temp_password);
+            expert.save(function(err){
+                if(err){
+                    return res.status(500).send(err);
+                }
+            });
+            return res.json({success: true, message: 'Successfully reset password'});
+        });
+    });
+    
+    /**
+     * Routes to inactivate users' accounts
+     */
+    
+    //Admins
+    router.patch('/archive_admin/:id', function(req, res){
+        
+        //first select the user with the specified id
+        Admin.findById(req.params.id, function(err, admin){
+            if(err){
+                return res.status(500).send(err);
+            }
+            
+            if(req.body.status){
+                admin.status = 'Active';
+                var message = 'Admin ' + admin.email_address + ' successfully restored';
+            } else {
+                admin.status = 'Inactive';
+                message = 'Admin ' + admin.email_address + ' successfully archived';
+            }
+            
+            admin.save(function(err){
+                if(err){
+                    return res.status(500).send(err);
+                }
+                
+                io.emit('archive', admin.status);
+                return res.json({
+                    success: true, 
+                    message: message,
+                    status: admin.status
+                });
+            });
+        });
+    });
     
     return router; 
 };

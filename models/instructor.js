@@ -9,7 +9,8 @@ var instructorSchema = new mongoose.Schema({
     email_address: {type: String, required: true, index: {unique: true}},
     user_type: {type: String, required: true},
     faculty: {type: String, required: true},
-    classes_taught: [{type: mongoose.Schema.Types.ObjectId, ref: 'Class'}]
+    classes_taught: [{type: mongoose.Schema.Types.ObjectId, ref: 'Class'}],
+    status: {type: String, default: 'Active'}
 });
 
 module.exports = mongoose.model('Instructor', instructorSchema);

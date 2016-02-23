@@ -16,6 +16,15 @@ authService.factory('Auth', function($q, $http, authToken){
         return $http.post('/auth/admin/login', {email_address: email_address, password: password})
                .success(function(data){
                    authToken.setToken(data.token);
+                   
+                   var user_data = {
+                       first_name: data.first_name, 
+                       last_name: data.last_name,
+                       user_type: data.user_type,
+                       id: data.id
+                   };
+                   
+                   authToken.setUserData(user_data);
                    return data;
                });
    };
@@ -30,7 +39,20 @@ authService.factory('Auth', function($q, $http, authToken){
    authFactory.loginStudent = function(admission_no, password){
         return $http.post('/auth/student/login', {admission_no: admission_no, password: password})
                .success(function(data){
+                   if(data.message){
+                       console.log(data.message);
+                   }
+                   
                    authToken.setToken(data.token);
+                   
+                   var user_data = {
+                       first_name: data.first_name, 
+                       last_name: data.last_name,
+                       user_type: data.user_type,
+                       id: data.id
+                   };
+                   
+                   authToken.setUserData(user_data);
                    return data;
                });
    };
@@ -46,6 +68,16 @@ authService.factory('Auth', function($q, $http, authToken){
         return $http.post('/auth/instructor/login', {email_address: email_address, password: password})
                .success(function(data){
                    authToken.setToken(data.token);
+                   
+                   var user_data = {
+                       first_name: data.first_name, 
+                       last_name: data.last_name,
+                       user_type: data.user_type,
+                       id: data.id
+                   };
+                   
+                   authToken.setUserData(user_data);
+                   
                    return data;
                });
    };
@@ -58,9 +90,10 @@ authService.factory('Auth', function($q, $http, authToken){
     * @returns {object} data
     */
    authFactory.loginExpert = function(email_address, password){
-        return $http.post('/auth/instructor/login', {username: email_address, password: password})
+        return $http.post('/auth/expert/login', {username: email_address, password: password})
                .success(function(data){
                    authToken.setToken(data.token);
+                   authToken.setUserData(data);
                    return data;
                });
    };
@@ -70,7 +103,9 @@ authService.factory('Auth', function($q, $http, authToken){
     * @returns {unresolved}
     */
    authFactory.logout = function(){
-       return authToken.setToken();
+       authToken.setToken();
+       authToken.setUserData();
+       return; 
    };
    
    authFactory.isLoggedIn = function(){
@@ -105,6 +140,22 @@ authService.factory('authToken', function($window){
         }
         
         return $window.localStorage.removeItem('token');
+    };
+    
+    authTokenFactory.setUserData = function(user_data){
+        if(user_data){
+            $window.sessionStorage.setItem('first_name', user_data.first_name);
+            $window.sessionStorage.setItem('last_name', user_data.last_name);
+            $window.sessionStorage.setItem('user_type', user_data.user_type);
+            $window.sessionStorage.setItem('id', user_data.id);
+            return;
+        }
+        
+        $window.sessionStorage.removeItem('first_name');
+        $window.sessionStorage.removeItem('last_name');
+        $window.sessionStorage.removeItem('user_type');
+        $window.sessionStorage.removeItem('id');
+        return;
     };
     
     return authTokenFactory;

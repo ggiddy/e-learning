@@ -1,3 +1,5 @@
+/* global io */
+
 var adminService = angular.module('adminService', []);
 
 adminService.factory('Admin', function($http){
@@ -27,5 +29,55 @@ adminService.factory('Admin', function($http){
             return $http.get('/admin/experts');
         };
         
+        adminFactory.changeAdminPassword = function(adminData){
+            return $http.patch('/admin/change_admin_pwd', adminData);
+        };
+        
+        adminFactory.resetAdminPassword = function(id){
+            return $http.patch('/admin/reset_admin_pwd/' + id);
+        };
+        
+        adminFactory.resetInstructorPassword = function(id){
+            return $http.patch('/admin/reset_instructor_pwd/' + id);
+        };
+        
+        adminFactory.resetStudentPassword = function(id){
+            return $http.patch('/admin/reset_student_pwd/' + id);
+        };
+        
+        adminFactory.resetExpertPassword = function(id){
+            return $http.patch('/admin/reset_expert_pwd/' + id);
+        };
+        
+        adminFactory.archiveAdminAccount = function(id, data){
+            return $http.patch('/admin/archive_admin/' + id, data);
+        };
+        
         return adminFactory;
+});
+
+adminService.factory('socketio', function($rootScope){
+    var socket = io.connect();
+    
+    return{
+       on: function(eventName, callback){
+           socket.on(eventName, function(){
+               var args = arguments;
+               
+               $rootScope.$apply(function(){
+                   callback.apply(socket, args);
+               });
+           });
+       }, 
+       emit: function(eventName, data, callback){
+           socket.emit(eventName, data, function(){
+               var args = arguments;
+               $rootScope.$apply(function(){
+                   if(callback){
+                       callback.apply(socket, args);
+                   }
+               });
+           });
+       }
+    };
 });

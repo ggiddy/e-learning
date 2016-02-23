@@ -1,43 +1,30 @@
 <div class="container">
-
       <div class="row row-offcanvas row-offcanvas-right">
-
         <div class="col-xs-12 col-sm-9">
           <p class="pull-right visible-xs">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
-          <p><button data-toggle="modal" data-target="#instructorSignupForm" class="btn btn-sm btn-success">{{"Add New Instructor"}}</button></p>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email Address</th>
-                  <th>Status</th>
-                  <th>Reset Password</th>
-                  <th>Archive</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="instructor in instructors"> 
-                  <td>{{instructor.first_name}}</td>
-                  <td>{{instructor.last_name}}</td>
-                  <td>{{instructor.email_address}}</td>
-                  <td><button class="btn btn-sm btn-info">{{"Active"}}</button></td>
-                  <td><button class="btn btn-sm btn-default" ng-click="resetInstructorPwd(instructor._id)">{{"Reset Password"}}</button></td>
-                  <td><a href="" class="btn btn-sm btn-danger" ng-click="">Archive</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          
+          <div class="row">
+            <div class="panel panel-success" ng-repeat="class in classes">
+                <div class="panel-heading">
+                    {{class.class_code}}
+                </div>
+                <div class="panel-body">
+                    <p>{{class.class_name}}</p> 
+                    <p><a class="btn btn-xs btn-success" href="#" role="button">View details &raquo;</a></p>
+                </div>
+              
+            </div><!--/span-->
+          </div><!--/row-->
+
 
         </div><!--/span-->
 
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
           <div class="list-group">
             <div class="panel-group" id="accordion">
-                <div class="panel panel-info">
+                <div class="panel panel-success">
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
@@ -45,7 +32,7 @@
                       </a>
                     </h4>
                   </div>
-                  <div id="collapseOne" class="panel-collapse collapse">
+                  <div id="collapseOne" class="panel-collapse collapse in">
                     <div class="panel-body">
       
                         <div class="row profile">
@@ -58,8 +45,8 @@
                             <!-- END SIDEBAR USERPIC -->
                             <!-- SIDEBAR USER TITLE -->
                             <div class="profile-usertitle">
-                              <div class="profile-usertitle-name"><br/>
-                                {{userData.first_name + ' ' + userData.last_name}}
+                              <div class="profile-usertitle-name text-center"><br/>
+                                {{ userData.first_name + ' ' + userData.last_name }}
                               </div><br/>
                               <div class="text-center">
                                   <a class="btn btn-xs btn-danger">{{userData.user_type}}</a>
@@ -100,7 +87,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-info">
+                <div class="panel panel-success">
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
@@ -116,7 +103,7 @@
                           <i class="glyphicon glyphicon-plus"></i>
                           New Class </a>
                         </li>
-                        <li class="active">
+                         <li class="active">
                           <a href="#/admin">
                           <i class="glyphicon glyphicon-eye-open"></i>
                           View Classes </a>
@@ -125,41 +112,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-info">
-                  <div class="panel-heading">
-                    <h4 class="panel-title">
-                      <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree">
-                          <span class="glyphicon glyphicon-user"></span> Users
-                      </a>
-                    </h4>
-                  </div>
-                  <div id="collapseThree" class="panel-collapse collapse in">
-                    <div class="panel-body">
-                        <ul class="nav">
-                                <li class="active">
-                                    <a href="#/admins">
-                                  <i class="glyphicon glyphicon-wrench"></i>
-                                  Admins </a>
-                                </li>
-                                <li>
-                                  <a href="#/instructors">
-                                  <i class="glyphicon glyphicon-bullhorn"></i>
-                                  Instructors </a>
-                                </li>
-                                <li>
-                                  <a href="#/experts">
-                                  <i class="glyphicon glyphicon-globe"></i>
-                                  Experts </a>
-                                </li>
-                                <li>
-                                  <a href="#/students">
-                                  <i class="glyphicon glyphicon-book"></i>
-                                  Students </a>
-                                </li>
-                              </ul>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
           </div>
         </div><!--/span-->
@@ -179,7 +132,7 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
                                 <form method="post" ng-submit="signUpAdmin()">
-                                    Class Code<input type="text" name="class_code" ng-model="userData.class_code" class="form-control"><br/>
+                                    Class Code<input type="text" name="class_code" ng-model="userData.first_name" class="form-control"><br/>
                                     Class Name<input type="text" name="class_name" ng-model="userData.last_name" class="form-control"><br/>
                                     Class Duration<input type="text" name="class_duration" ng-model="userData.email_address" class="form-control"><br/>
                                     Start-time<input type="type" name="class_time" ng-model="userData.password" class="form-control"><br/>
@@ -193,6 +146,7 @@
               </div>
             </div>
             <script>
+                
                 //triggered when modal is about to be shown
                 $('#editClassForm').on('show.bs.modal', function(e) {
 
@@ -246,19 +200,19 @@
         <div ng-controller="adminController" class="modal fade" id="accountSettings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header success">
                   <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                  <h4 class="modal-title text-center" id="myModalLabel">Account Settings</h4>
+                  <h4 class="modal-title text-center" id="myModalLabel">Change Password</h4>
                 </div>
                 <div class="modal-body">
                     <div class="container form-horizontal">
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
-                                <form method="post" ng-submit="signUpStudent()">
-                                    Old Password<input type="password" name="old_password" ng-model="changePwd.old_password" class="form-control"><br/>
-                                    New Password<input type="password" name="new_password" ng-model="changePwd.new_password" class="form-control"><br/>
-                                    Confirm New Password<input type="password" name="conf_password" ng-model="changePwd.conf_password" class="form-control"><br/>
-                                    <button type="submit" id="submitChangesBtn" class="btn btn-danger">Signup</button>
+                                <form method="post" ng-submit="changePassword()">
+                                    Old Password<input type="password" name="old_password" ng-model="adminData.old_password" class="form-control"><br/>
+                                    New Password<input type="password" name="new_password" ng-model="adminData.new_password" class="form-control"><br/>
+                                    Confirm New Password<input type="password" name="conf_password" class="form-control"><br/>
+                                    <button type="submit" id="submitChangesBtn" class="btn btn-danger">Confirm</button>
                                 </form>
                             </div>
                         </div> 
@@ -267,37 +221,7 @@
               </div>
             </div>
             <script>
+             
                 $('#submitChangesBtn').click(function(){ $('#accountSettings').modal('hide'); });
-            </script>
-        </div>
-    
-    <!--Modal that carries the instructor sign up form-->
-        <div ng-controller="createInstructorController" class="modal fade" id="instructorSignupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                  <h4 class="modal-title text-center" id="myModalLabel">Signup</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="container form-horizontal">
-                        <div class="row">
-                            <div class="col-sm-6 col-md-4">
-                                <form method="post" ng-submit="signUpInstructor()">
-                                    First Name<input type="text" name="first_name" ng-model="userData.first_name" class="form-control"><br/>
-                                    Last Name<input type="text" name="last_name" ng-model="userData.last_name" class="form-control"><br/>
-                                    Email Address<input type="text" name="email_address" ng-model="userData.email_address" class="form-control"><br/>
-                                    Faculty<input type="text" name="faculty" ng-model="userData.faculty" class="form-control"><br/>
-                                    Password<input type="password" name="password" ng-model="userData.password" class="form-control"><br/>
-                                    <button type="submit" id="submitInstructorBtn" class="btn btn-danger">Signup</button>
-                                </form>
-                            </div>
-                        </div> 
-                    </div>                    
-                </div>
-              </div>
-            </div>
-            <script>
-                $('#submitInstructorBtn').click(function(){ $('#instructorSignupForm').modal('hide'); });
             </script>
         </div>

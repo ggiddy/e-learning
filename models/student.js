@@ -10,7 +10,8 @@ var studentSchema = new mongoose.Schema({
     user_type: {type: String, required: true},
     admission_no: {type: String, required: true},
     faculty: {type: String, required: true},
-    classes_taken: [{type: mongoose.Schema.Types.ObjectId, ref: 'Class', index: {unique: true}}]
+    classes_taken: [{type: mongoose.Schema.Types.ObjectId, ref: 'Class', index: {unique: true}}],
+    status: {type: String, default: 'Active'}
 });
 
 module.exports = mongoose.model('Student', studentSchema);

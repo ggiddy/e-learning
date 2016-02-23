@@ -25,9 +25,9 @@
                   <td>{{admin.first_name}}</td>
                   <td>{{admin.last_name}}</td>
                   <td>{{admin.email_address}}</td>
-                  <td><button class="btn btn-sm btn-info">{{"Active"}}</button></td>
-                  <td><button class="btn btn-sm btn-default">{{"Reset Password"}}</button></td>
-                  <td><a href="" class="btn btn-sm btn-danger" ng-click="">Archive</a></td>
+                  <td><button ng-class="displayStatus(admin.status)">{{admin.status}}</button></td>
+                  <td><button class="btn btn-sm btn-default" ng-click="resetAdminPwd(admin._id)">{{"Reset Password"}}</button></td>
+                  <td><a href="" ng-class="archiveBtnColor(admin.status)" ng-click="archiveAdmin(admin._id, admin.status); clicked(admin, $event)">{{action}}</a></td>
                 </tr>
               </tbody>
             </table>
@@ -60,10 +60,10 @@
                             <!-- SIDEBAR USER TITLE -->
                             <div class="profile-usertitle">
                               <div class="profile-usertitle-name"><br/>
-                                {{ 'Gideon Gitau' }}
+                                {{userData.first_name + ' ' + userData.last_name}}
                               </div><br/>
                               <div class="text-center">
-                                  <a class="btn btn-xs btn-danger">Admin</a>
+                                  <a class="btn btn-xs btn-danger">{{userData.user_type}}</a>
                               </div>
                             </div>
                             <!-- END SIDEBAR USER TITLE -->
@@ -116,6 +116,11 @@
                           <a href="" data-toggle='modal' data-target='#newClass'>
                           <i class="glyphicon glyphicon-plus"></i>
                           New Class </a>
+                        </li>
+                        <li class="active">
+                          <a href="#/admin">
+                          <i class="glyphicon glyphicon-eye-open"></i>
+                          View Classes </a>
                         </li>
                       </ul>
                     </div>
@@ -251,12 +256,9 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
                                 <form method="post" ng-submit="signUpStudent()">
-                                    First Name<input type="text" name="first_name" ng-model="userData.first_name" class="form-control"><br/>
-                                    Last Name<input type="text" name="last_name" ng-model="userData.last_name" class="form-control"><br/>
-                                    Email Address<input type="text" name="email_address" ng-model="userData.email_address" class="form-control"><br/>
-                                    Admission no.<input type="text" name="admission_no" ng-model="userData.admission_no" class="form-control"><br/>
-                                    Faculty<input type="text" name="faculty" ng-model="userData.faculty" class="form-control"><br/>
-                                    Password<input type="password" name="password" ng-model="userData.password" class="form-control"><br/>
+                                    Old Password<input type="password" name="old_password" ng-model="changePwd.old_password" class="form-control"><br/>
+                                    New Password<input type="password" name="new_password" ng-model="changePwd.new_password" class="form-control"><br/>
+                                    Confirm New Password<input type="password" name="conf_password" ng-model="changePwd.conf_password" class="form-control"><br/>
                                     <button type="submit" id="submitChangesBtn" class="btn btn-danger">Signup</button>
                                 </form>
                             </div>

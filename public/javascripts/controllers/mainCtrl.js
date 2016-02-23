@@ -12,7 +12,6 @@ mainCtrl.controller('mainController', function($scope, $rootScope, $location, Au
         Auth.getUser().success(function(data){
             $rootScope.user.email_address = data.email_address;
             $rootScope.user.id = data.id;
-            $rootScope.user.admin = false;
         });
     });
     

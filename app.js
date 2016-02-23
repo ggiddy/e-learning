@@ -9,7 +9,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var config = require('./config');
 var mongoose = require('mongoose');
-var administrator = require('./routes/admin')();
+var io = socket_io();
+var administrator = require('./routes/admin')(io);
 var instructor = require('./routes/instructor')();
 var index = require('./routes/index')(io);
 var class_id = require('./routes/class_id')();
@@ -18,10 +19,6 @@ var access = require('./routes/access_middleware')();
 mongoose.connect(config.database);
 
 var app = express();
-
-//socket.io
-
-var io = socket_io();
 
 app.io = io;
 

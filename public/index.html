@@ -34,7 +34,8 @@
         <script src="/javascripts/controllers/mainCtrl.js"></script>
         <script src="/javascripts/controllers/userCtrl.js"></script>
         <script src="/javascripts/controllers/adminCtrl.js"></script>
-        
+        <script src="/javascripts/controllers/instructorCtrl.js"></script>
+        <script src="/javascripts/controllers/studentCtrl.js"></script>
         
         <!--Directives-->
         <script src="/javascripts/directives/reverseDirective.js"></script>
@@ -92,7 +93,7 @@
                       </ul>
                       
                       <ul class="nav navbar-nav navbar-right">
-                           <li><a href="" ng-show="loggedIn"><span class="glyphicon glyphicon-user"></span> {{user.email_address}}</a></li>
+                           <li><a href="" ng-show="loggedIn"><span class="glyphicon glyphicon-user"></span> {{user.email_address || user.admission_no}}</a></li>
                       </ul>
                   </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->
@@ -195,7 +196,7 @@
         </div>
         
         <!--Modal that contains the instructor login up form-->
-        <div class="modal fade" id="instructorLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div ng-controller="mainController" class="modal fade" id="instructorLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -206,10 +207,10 @@
                     <div class="container form-horizontal">
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
-                                <form method="post" ng-submit="signUpUser()">
-                                    Email Address<input type="text" name="email_address" ng-model="userData.password" class="form-control"><br/>
-                                    Password<input type="password" name="password" ng-model="userData.name" class="form-control"><br/>
-                                    <button type="submit" id="loginBtn" class="btn btn-success" data-dismiss="modal">Login</button>
+                                <form method="post" ng-submit="instructorLogin()">
+                                    Email Address<input type="text" name="email_address" ng-model="email_address" class="form-control"><br/>
+                                    Password<input type="password" name="password" ng-model="password" class="form-control"><br/>
+                                    <button type="submit" id="loginInstructorBtn" class="btn btn-success">Login</button>
                                 </form>
                             </div>
                         </div> 
@@ -218,7 +219,7 @@
               </div>
             </div>
             <script>
-                $('#loginBtn').click(function(){ $('#instructorLoginForm').modal('hide'); });
+                $('#loginInstructorBtn').click(function(){ $('#instructorLoginForm').modal('hide'); });
             </script>
         </div>
         

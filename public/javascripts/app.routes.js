@@ -15,16 +15,16 @@ routes.config(function($routeProvider, $locationProvider){
                   controller: 'adminController'
               })
               .when('/student', {
-                  templateUrl: 'student/home.html',
-                  controller: 'mainController'
+                  templateUrl: 'student/student_home.html',
+                  controller: 'instructorController'
               })
               .when('/expert', {
                   templateUrl: 'expert/home.html',
                   controller: 'mainController'
               })
               .when('/instructor', {
-                  templateUrl: 'instructor/home.html',
-                  controller: 'mainController'
+                  templateUrl: 'instructor/instructor_home.html',
+                  controller: 'instructorController'
               })
               
               

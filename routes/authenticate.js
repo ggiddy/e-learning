@@ -77,7 +77,7 @@ router.post('/expert/signup', function(req, res) {
 /* This route logs in a student into the system */
 router.post('/student/login', function(req,res){
     Student.findOne({admission_no: req.body.admission_no})
-            .select('email_address admission_no password')
+            .select('first_name last_name user_type email_address admission_no password status')
             .exec(function(err, student){
         if(err){
             return res.send(err);
@@ -88,6 +88,12 @@ router.post('/student/login', function(req,res){
         if(!isValidPassword(student, req.body.password)){
             return res.json({success: false, message: "Invalid password provided"});
         }
+        if(student.status !== 'Active'){
+            return res.json({
+                success: false, 
+                message: 'Your accout is inactive. Please consult an admin'
+            });
+        }
         
         console.log('Successfully logged in user: ' + student.admission_no);
         
@@ -95,8 +101,12 @@ router.post('/student/login', function(req,res){
         var token = createToken(student);
         
         return res.json({
-            success: true, 
-            email_address: student.email_address, 
+            success: true,
+            first_name: student.first_name,
+            last_name: student.last_name,
+            id: student._id,
+            email_address: student.email_address,
+            user_type: student.user_type,
             token: token
         });
     });
@@ -107,7 +117,7 @@ router.post('/student/login', function(req,res){
 /* This route logs in an admin into the system */
 router.post('/admin/login', function(req,res){
     Admin.findOne({email_address: req.body.email_address.toLowerCase()})
-            .select('email_address password')
+            .select('first_name last_name email_address user_type password')
             .exec(function(err, admin){
         if(err){
             return res.send(err);
@@ -131,8 +141,12 @@ router.post('/admin/login', function(req,res){
         var token = createToken(admin);
         
         return res.json({
-            success: true, 
-            email_address: admin.email_address, 
+            success: true,
+            first_name: admin.first_name,
+            last_name: admin.last_name,
+            id: admin._id,
+            email_address: admin.email_address,
+            user_type: admin.user_type,
             token: token
         });
     });
@@ -141,7 +155,7 @@ router.post('/admin/login', function(req,res){
 /* This route logs in a instructor into the system */
 router.post('/instructor/login', function(req,res){
     Instructor.findOne({email_address: req.body.email_address.toLowerCase()})
-            .select('email_address password')
+            .select('first_name last_name email_address user_type password')
             .exec(function(err, instructor){
         if(err){
             return res.send(err);
@@ -159,8 +173,12 @@ router.post('/instructor/login', function(req,res){
         var token = createToken(instructor);
         
         return res.json({
-            success: true, 
-            email_address: instructor.email_address, 
+            success: true,
+            first_name: instructor.first_name,
+            last_name: instructor.last_name,
+            id: instructor._id,
+            email_address: instructor.email_address,
+            user_type: instructor.user_type,
             token: token
         });
     });
@@ -236,3 +254,4 @@ var createToken = function(user){
 module.exports = router;
 module.exports.createHash = createHash;
 module.exports.createToken = createToken;
+module.exports.isValidPassword = isValidPassword;

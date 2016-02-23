@@ -8,7 +8,8 @@ var expertSchema = new mongoose.Schema({
     password: {type: String, required: true, select: false},   
     email_address: {type: String, required: true, index: {unique: true}},
     user_type: {type: String, required: true},
-    specialty: {type: String, required: true}
+    specialty: {type: String, required: true},
+    status: {type: String, default: 'Active'}
 });
 
 module.exports = mongoose.model('Expert', expertSchema);

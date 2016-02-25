@@ -16,7 +16,7 @@ routes.config(function($routeProvider, $locationProvider){
               })
               .when('/student', {
                   templateUrl: 'student/student_home.html',
-                  controller: 'instructorController'
+                  controller: 'studentController'
               })
               .when('/expert', {
                   templateUrl: 'expert/home.html',
@@ -24,6 +24,10 @@ routes.config(function($routeProvider, $locationProvider){
               })
               .when('/instructor', {
                   templateUrl: 'instructor/instructor_home.html',
+                  controller: 'instructorController'
+              })
+              .when('/class', {
+                  templateUrl: 'instructor/class.html',
                   controller: 'instructorController'
               })
               

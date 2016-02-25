@@ -5,16 +5,12 @@ var router = express.Router();
 var Class = require('../models/class');
 
 /**
- * This module returns the class id when provided with the class code
+ * This module returns the class when supplied with the class id
  */
 module.exports = function(){
-   router.post('/', function(req, res){
-       Class.findOne({class_code: req.body.class_code}, function(err, the_class){
-           if(err){
-               return res.status(500).send(err);
-           }
-           return res.json(the_class._id);
-       });
+   router.get('/', function(req, res){
+       console.log(req.body);
+       
    }); 
    
    return router;

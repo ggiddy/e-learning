@@ -2,20 +2,18 @@
 
 var express = require('express');
 var router = express.Router();
+var async = require('async');
 var access = require('./access_middleware')();
 var Instructor = require('../models/instructor');
 var auth = require('./authenticate');
 var Class = require('../models/class');
+var Messages = require('../models/messages');
 
 //middleware to confirm it is instructor calling these routes
 router.use('/access', access);
 
-module.exports = function(){
-    
-    classes_taught = [];
-    done = false;
-    counter = 0;
-    
+module.exports = function(io){
+
     //route to edit profile
     router.route('/profile/:id')
             .patch(function(req, res){
@@ -87,34 +85,51 @@ module.exports = function(){
         });
     });
     
-    //router to return all classes taught
+    //router to return all classes taught given the instructor's id
     router.get('/get_classes/:id', function(req, res){
         
-        Instructor.findById(req.params.id).select('classes_taught').exec(function(err, inst){
-            for(var i=0; i<inst['classes_taught'].length; i++){
-                
-                //for every class_id query the database to get the class itself
-                Class.findById(inst['classes_taught'][i]).exec(function(err, class_taught){
-                    classes_taught.push(class_taught);  
+        Instructor.findById(req.params.id).select('classes_taught').exec(function(err, inst){ 
+            var taught = [];
+            var items = inst['classes_taught'];
+            async.each(items, function(item, callback){
+                Class.findById(item, function(err, result){
+                    taught.push(result);
+                    callback(); 
                 });
-                counter++;
-            }
-            if(counter === inst['classes_taught'].length){
-                done = true;
-            }
-            
-            if(done){
-                return res.json(classes_taught);
-            }
-            
+            }, function(err){
+                if(err){
+                    return res.sendStatus(500).send(err);
+                }
+                return res.json(taught);
+            });
         });
-        
     });
     
-    //router to clear the classes_taught array
-    router.get('/clear_taught', function(req, res){
-        classes_taught = [];
-        return;
-    });
+    //route to send and receive messages
+    router.route('/messages/:id')
+        .get(function(req, res){
+             Messages.find({class_id: req.params.id}, function(err, messages){
+                 if(err){
+                     return res.status(500).send(err);
+                 }
+                 return res.json(messages);
+             });
+        })
+        .post(function(req, res){
+            var msg = new Messages();
+
+            msg.message = req.body.message;
+            msg.sender = req.body.sender;
+            msg.class_id = req.params.id;
+            msg.created_at = Date.now();
+
+            msg.save(function(err){
+                if(err){
+                    return res.status(500).send(err);
+                }
+                io.emit(req.params.id, msg);
+                return;
+            });
+        });
     return router;
 };

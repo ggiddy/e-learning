@@ -15,13 +15,16 @@ instructorService.factory('Instr', function($http){
         instructorFactory.getClasses = function(id){
             return $http.get('instructor/get_classes/'+id);
         };
-        instructorFactory.clearTaught = function(){
-            return $http.get('/instructor/clear_taught');
+        instructorFactory.sendMsg = function(class_id, msgData){
+           return $http.post('/instructor/messages/' + class_id, msgData); 
+        };
+        instructorFactory.getMsgs = function(class_id){
+           return $http.get('/instructor/messages/' + class_id); 
         };
         
         return instructorFactory;
 });
-/**
+
 instructorService.factory('socketio', function($rootScope){
     var socket = io.connect();
     
@@ -46,4 +49,4 @@ instructorService.factory('socketio', function($rootScope){
            });
        }
     };
-}); **/
+});

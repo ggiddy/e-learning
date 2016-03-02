@@ -1,0 +1,22 @@
+{
+  "name": "e-learning",
+  "description": "This is an elearning system designed to facilitate communication, file sharing and video streaming among students and lecturers",
+  "main": "",
+  "authors": [
+    "ggiddy <nggitau@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ggiddy/e-learning",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-scroll-glue": "^2.0.6"
+  }
+}

@@ -2,7 +2,7 @@
 
       <div class="row row-offcanvas row-offcanvas-right">
 
-        <div class="col-xs-12 col-sm-9 well">
+        <div class="col-xs-12 col-sm-9">
           <p class="pull-right visible-xs">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
@@ -12,8 +12,8 @@
               <thead>
                 <tr>
                   <th>Class Code</th>
-                  <th>Status</th>
                   <th>Class Name</th>
+                  <th>Status</th>
                   <th>Lecturer</th>
                   <th>Venue</th>
                   <th>Start-time</th>
@@ -24,14 +24,14 @@
               <tbody>
                 <tr ng-repeat="class in classes"> 
                   <td>{{class.class_code}}</td>
-                  <td><button class="btn btn-sm btn-info">{{"Active"}}</button></td>
                   <td>{{class.class_name}}</td>
+                  <td><button class="btn btn-sm btn-info">{{"Active"}}</button></td>
                   <td>{{'Mr. So And So'}}</td>
                   <td>{{class.class_venue}}</td>
                   <td >{{class.class_time | date:"h:mma"}}</td>
                   <td><a href="" data-id="{{ class }}" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editClassForm">
-                          <span class="glyphicon glyphicon-edit"></span> Edit Class</a></td>
-                  <td><a href="" class="btn btn-sm btn-danger" ng-click="">Archive Class</a></td>
+                          <span class="glyphicon glyphicon-edit"></span> Edit</a></td>
+                  <td><a href="" class="btn btn-sm btn-danger" ng-click="">Archive</a></td>
                 </tr>
               </tbody>
             </table>

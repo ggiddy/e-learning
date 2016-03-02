@@ -12,7 +12,7 @@
                 </div>
                 <div class="panel-body">
                     <p>{{class.class_name}}</p> 
-                    <p><a class="btn btn-xs btn-success" href="/admin/class/{{class._id}}" role="button">View details &raquo;</a></p>
+                    <p><a class="btn btn-xs btn-success" href="#/class/{{class._id}}" role="button" ng-click="clearTaught()">View details &raquo;</a></p>
                 </div>
             </div><!--/span-->
           </div><!--/row-->
@@ -112,9 +112,9 @@
                     <div class="panel-body">
                       <ul class="nav">
                         <li class="active">
-                          <a href="" data-toggle='modal' data-target='#newClass'>
+                          <a href="" data-toggle='modal' data-target='#instructorChoices'>
                           <i class="glyphicon glyphicon-plus"></i>
-                          New Class </a>
+                          Add Class </a>
                         </li>
                          <li class="active">
                           <a href="#/admin">
@@ -269,7 +269,7 @@
             </script>
         </div>
 
-        <!--Modal that contains the form to edit class details-->
+        <!--Modal that contains the form to select classes that instructor teaches-->
         <div class="modal fade" id="instructorChoices" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -280,7 +280,7 @@
                 <div class="modal-body">
                   <div class="table-responsive">
                     <form ng-submit="getInstructorSelections()">
-                        <table class="table table-stripped">
+                        <table class="table table-striped">
                           <thead>
                             <tr>
                               <th>Class code</th>

@@ -2,7 +2,7 @@
 
 var myApp = angular.module('myApp', ['appRoutes', 'authService', 'mainCtrl', 
     'userService', 'userCtrl', 'adminService', 'adminCtrl', 'instructorCtrl', 
-    'studentCtrl', 'instructorService', 'reverse']);
+     'instructorService', 'studentCtrl', 'studentService', 'reverse', 'luegg.directives']);
 
 myApp.config(function($httpProvider){
     $httpProvider.interceptors.push('authInterceptor');

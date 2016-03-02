@@ -26,9 +26,9 @@ routes.config(function($routeProvider, $locationProvider){
                   templateUrl: 'instructor/instructor_home.html',
                   controller: 'instructorController'
               })
-              .when('/class', {
+              .when('/class/:classId', {
                   templateUrl: 'instructor/class.html',
-                  controller: 'instructorController'
+                  controller: 'instrClassController'
               })
               
               

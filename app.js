@@ -11,9 +11,8 @@ var config = require('./config');
 var mongoose = require('mongoose');
 var io = socket_io();
 var administrator = require('./routes/admin')(io);
-var instructor = require('./routes/instructor')();
+var instructor = require('./routes/instructor')(io);
 var index = require('./routes/index')(io);
-var class_id = require('./routes/class_id')();
 var student  = require('./routes/student')();
 var access = require('./routes/access_middleware')();
 mongoose.connect(config.database);
@@ -40,7 +39,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/auth', authenticate);
 app.use('/admin', administrator);
 app.use('/instructor', instructor);
-app.use('/class_id', class_id);
 app.use('/student', student);
 app.use('/access', access);
 

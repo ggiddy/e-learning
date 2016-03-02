@@ -4,14 +4,26 @@
           <p class="pull-right visible-xs">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
-          <div class="post" ng-repeat="post in posts | orderBy:'created_at':true" ng-class-odd="'odd'" ng-class-even="'even'"> 
-              <p>{{post.text}}</p>
-              <small>Posted by @{{post.username}}</small>
-              <small class="pull-right">{{post.created_at | date:"h:mma 'on' MMM d, y"}}</small>
+          
+          <h4>Class Messages</h4>
+          <div scroll-glue id="post-stream" class="pre-scrollable">
+            
+                <div class="post" ng-repeat="msg in messages | orderBy:'created_at':false" ng-class-odd="'odd'" ng-class-even="'even'"> 
+                    <p>{{msg.message}}</p>
+                    <small> by @{{msg.sender}}</small>
+                    <small class="pull-right">{{msg.created_at | date:"h:mma 'on' MMM d, y"}}</small>
+                </div>
           </div>
-
-
-        </div><!--/span-->
+    
+          <div class="clearfix">
+            <form ng-submit="sendMessage()">
+                <hr>
+                <textarea required class="form-control" maxlength="200" rows="3" placeholder="Comments, posts, suggestions, questions..." ng-model="msgData.message"></textarea>
+                <button class="btn submit-btn pull-right" type="submit">Send <span class="glyphicon glyphicon-send"></span></button>
+            </form>
+            <br/>
+        </div>
+        </div>
 
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
           <div class="list-group">
@@ -24,7 +36,7 @@
                       </a>
                     </h4>
                   </div>
-                  <div id="collapseOne" class="panel-collapse collapse in">
+                  <div id="collapseOne" class="panel-collapse collapse">
                     <div class="panel-body">
       
                         <div class="row profile">
@@ -83,22 +95,17 @@
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
-                          <span class="glyphicon glyphicon-book"></span> Classes
+                          <span class="glyphicon glyphicon-book"></span> My Classes
                       </a>
                     </h4>
                   </div>
-                  <div id="collapseTwo" class="panel-collapse collapse">
+                  <div id="collapseTwo" class="panel-collapse collapse in">
                     <div class="panel-body">
                       <ul class="nav">
-                        <li class="active">
+                        <li ng-controller="instrClassController" class="active" ng-repeat="class in classes_taught">
                           <a href="" data-toggle='modal' data-target='#newClass'>
                           <i class="glyphicon glyphicon-plus"></i>
-                          New Class </a>
-                        </li>
-                         <li class="active">
-                          <a href="#/admin">
-                          <i class="glyphicon glyphicon-eye-open"></i>
-                          View Classes </a>
+                          {{class.class_name}} </a>
                         </li>
                       </ul>
                     </div>
@@ -217,3 +224,76 @@
                 $('#submitChangesBtn').click(function(){ $('#accountSettings').modal('hide'); });
             </script>
         </div>
+    
+    <!--Modal that contains the form to edit account settings-->
+        <div ng-controller="adminController" class="modal fade" id="noClasses" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header success">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" id="myModalLabel">Change Password</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="changePassword()">
+                                    Old Password<input type="password" name="old_password" ng-model="adminData.old_password" class="form-control"><br/>
+                                    New Password<input type="password" name="new_password" ng-model="adminData.new_password" class="form-control"><br/>
+                                    Confirm New Password<input type="password" name="conf_password" class="form-control"><br/>
+                                    <button type="submit" id="submitChangesBtn" class="btn btn-danger">Confirm</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+            <script>
+             
+                $('#submitChangesBtn').click(function(){ $('#accountSettings').modal('hide'); });
+            </script>
+        </div>
+
+        <!--Modal that contains the form to select classes that instructor teaches-->
+        <div class="modal fade" id="instructorChoices" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" id="myModalLabel">Select Classes</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="table-responsive">
+                    <form ng-submit="getInstructorSelections()">
+                        <table class="table table-stripped">
+                          <thead>
+                            <tr>
+                              <th>Class code</th>
+                              <th>Class name</th>
+                              <th></th>
+                              <th></th>
+                            </tr>   
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="class in classes">
+                                <td>{{class.class_code}}</td>
+                                <td>{{class.class_name}}</td>
+                                <td><input type="checkbox" ng-model="class.selected"/></td>
+                                <td><input type="hidden" value="{{class._id}}" /></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="text-center">
+                            <button type="submit" id="submitChoices" class="btn btn-sm btn-success">Submit</button> 
+                        </div>
+                    </form>
+                  </div>               
+                </div>
+              </div>
+            </div>
+            <script>
+                $('#submitChoices').click(function(){ $('#instructorChoices').modal('hide'); });
+            </script>
+        </div>
+       

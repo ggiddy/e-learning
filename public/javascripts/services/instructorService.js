@@ -8,6 +8,10 @@ instructorService.factory('Instr', function($http){
         instructorFactory.insertSelections = function(id, objSelections){
             return $http.patch('/instructor/add_classes/' + id, objSelections);
         };
+
+        instructorFactory.removeSelections = function(id, objRemove){
+            return $http.patch('/instructor/remove_classes/' + id, objRemove);
+        };
         
         instructorFactory.getClassIds = function(id){
             return $http.get('/instructor/get_classes/'+id);

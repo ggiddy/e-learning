@@ -54,33 +54,73 @@ module.exports = function(io){
                 if(err){
                     return res.status(500).send(err);
                 }
-                        
-                return res.json({
-                    success: true,
-                    message: 'Successfully added classes'
-                });
+                
+                var to_teach = [];
+                async.each(req.body.selections, 
+                    function(the_class, callback){
+                        Class.findById(the_class, function(err, result){
+                            to_teach.push(result);
+                            callback();
+                        });
+                    }, 
+                    function(err){
+                        if(err){
+                            return res.status(500).send(err);
+                        }
+
+                        //emit event so that the class is added in real time
+                        io.emit(req.params.lec_id, to_teach);
+
+                        return res.json({success: true, message: 'Successfully added classes'});
+                }); 
             });
         });
     });
     
     //router to remove classes taught
-    router.patch('/remove_class/:id', function(req, res){
+    router.patch('/remove_classes/:id', function(req, res){
         Instructor.findById(req.params.id, function(err, instructor){
             if(err){
                 return res.status(500).send(err);
             }
             
-            instructor.classes_taught.remove(req.body.class_id);
+            //loop though the selections array and remove each of its contents from the database
+            for(var i=0; i<req.body.selections.length; i++){
+                if(instructor.classes_taught.indexOf(req.body.selections[i]) !== -1){
+                    instructor.classes_taught.remove(req.body.selections[i]);
+                }  
+            }
 
             instructor.save(function(err){
                 if(err){
                     return res.status(500).send(err);
                 }
+                Instructor.findById(req.params.id).select('classes_taught').exec(function(err, inst){
+                    if(err){
+                        return res.status(500).send(err);
+                    }
+
+                    var removed = [];
+                    async.each(inst.classes_taught, 
+                    function(the_class, callback){
+                        Class.findById(the_class, function(err, result){
+                            removed.push(result);
+                            callback();
+                        });
+                    }, 
+                    function(err){
+                        if(err){
+                            return res.status(500).send(err);
+                        }
                         
-                return res.send({
-                    success: true,
-                    message: 'Successfully removed class'
-                });
+                        //emit event so that the class is added in real time
+                        var remevent = req.params.id + 'remove';
+                        io.emit(remevent, removed);
+
+                        return res.json({success: true, message: 'Successfully removed classes'});
+                    }); 
+                })
+                
             });
         });
     });
@@ -106,30 +146,34 @@ module.exports = function(io){
     });
     
     //route to send and receive messages
-    router.route('/messages/:id')
-        .get(function(req, res){
-             Messages.find({class_id: req.params.id}, function(err, messages){
-                 if(err){
-                     return res.status(500).send(err);
-                 }
-                 return res.json(messages);
-             });
-        })
-        .post(function(req, res){
-            var msg = new Messages();
-
-            msg.message = req.body.message;
-            msg.sender = req.body.sender;
-            msg.class_id = req.params.id;
-            msg.created_at = Date.now();
-
-            msg.save(function(err){
-                if(err){
-                    return res.status(500).send(err);
-                }
-                io.emit(req.params.id, msg);
-                return;
-            });
+    router.get('/messages/:id', function(req, res){
+        Messages.find({class_id: req.params.id}, function(err, messages){
+            if(err){
+                return res.status(500).send(err);
+            }
+             
+            return res.json(messages);
         });
+    });
+
+    router.post('/messages/:id', function(req, res){
+        var msg = new Messages();
+
+        msg.message = req.body.message;
+        msg.sender = req.body.sender;
+        msg.class_id = req.params.id;
+        msg.created_at = Date.now();
+        
+        msg.save(function(err, message){
+            if(err){
+                return res.status(500).send(err);
+            }
+
+            io.emit(req.params.id, message);
+            
+            return res.json({success: true, message: 'Successfully sent'});
+        });
+    });
+
     return router;
 };

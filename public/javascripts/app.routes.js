@@ -30,6 +30,10 @@ routes.config(function($routeProvider, $locationProvider){
                   templateUrl: 'instructor/class.html',
                   controller: 'instrClassController'
               })
+              .when('/resourses', {
+                 templateUrl: 'instructor/resourses.html',
+                 controller: 'resoursesController'
+              })
               
               
               //Routes that administrator uses to view different groups of users

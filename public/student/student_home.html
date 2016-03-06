@@ -6,13 +6,13 @@
           </p>
           
           <div class="row" ng-show="has_cls">
-            <div class="col-md-4 panel panel-info" ng-repeat="class in classes_taken">
+            <div ng-class="resizePanel()" ng-repeat="class in classes_taken">
                 <div class="panel-heading">
                     {{class.class_code}}
                 </div>
                 <div class="panel-body">
                     <p>{{class.class_name}}</p> 
-                    <p><a class="btn btn-xs btn-success" href="#/class/{{class._id}}" role="button">View details &raquo;</a></p>
+                    <p><a class="btn btn-xs btn-success" href="#/class/{{class._id}}" role="button">visit &raquo;</a></p>
                 </div>
             </div><!--/span-->
           </div><!--/row-->
@@ -37,7 +37,7 @@
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
           <div class="list-group">
             <div class="panel-group" id="accordion">
-                <div class="panel panel-success">
+                <div class="panel panel-info">
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
@@ -100,7 +100,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="panel panel-success">
+                <div class="panel panel-info">
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
@@ -112,14 +112,14 @@
                     <div class="panel-body">
                       <ul class="nav">
                         <li class="active">
-                          <a href="" data-toggle='modal' data-target='#newClass'>
+                          <a href="" data-toggle='modal' data-target='#studentChoices'>
                           <i class="glyphicon glyphicon-plus"></i>
-                          New Class </a>
+                          Add Classes </a>
                         </li>
                          <li class="active">
-                          <a href="#/admin">
-                          <i class="glyphicon glyphicon-eye-open"></i>
-                          View Classes </a>
+                          <a href="" data-toggle="modal" data-target="#studentRemoveClasses">
+                          <i class="glyphicon glyphicon-minus-sign"></i>
+                          Remove Classes </a>
                         </li>
                       </ul>
                     </div>
@@ -249,7 +249,7 @@
                 </div>
                 <div class="modal-body">
                   <div class="table-responsive">
-                    <form ng-submit="getStudentSelections()">
+                    <form ng-submit="selectStudentClasses()">
                         <table class="table table-striped">
                           <thead>
                             <tr>
@@ -278,5 +278,48 @@
             </div>
             <script>
                 $('#submitStudentChoices').click(function(){ $('#studentChoices').modal('hide'); });
+            </script>
+        </div>
+
+
+        <!--Modal that contains the form to remove from the classes that student takes-->
+        <div class="modal fade" id="studentRemoveClasses" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" id="myModalLabel">Select Classes</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="table-responsive">
+                    <form ng-submit="removeStudentClasses()">
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th>Class code</th>
+                              <th>Class name</th>
+                              <th></th>
+                              <th></th>
+                            </tr>   
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="class in classes_taken">
+                                <td>{{class.class_code}}</td>
+                                <td>{{class.class_name}}</td>
+                                <td><input type="checkbox" ng-model="class.selected"/></td>
+                                <td><input type="hidden" value="{{class._id}}" /></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="text-center">
+                            <button type="submit" id="submitStudentRemoved" class="btn btn-sm btn-danger">Remove</button> 
+                        </div>
+                    </form>
+                  </div>               
+                </div>
+              </div>
+            </div>
+            <script>
+                $('#submitStudentRemoved').click(function(){ $('#studentRemoveClasses').modal('hide'); });
             </script>
         </div>

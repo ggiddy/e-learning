@@ -11,7 +11,7 @@ studentCtrl.controller('studentController', function($scope, $window, Student, A
     };
     $scope.classes = [];
     $scope.selectedClasses = [];
-    $scope.objClassIds = {classes_taught: {}};
+    $scope.selectedRemove = [];
     $scope.classes_taken = [];
     $scope.has_cls = true;
     
@@ -28,10 +28,8 @@ studentCtrl.controller('studentController', function($scope, $window, Student, A
         })
         .success(function(){
             $scope.has_classes();
-        })
-        .success(function(){
-            Student.clearTaken();
         });
+
         Admin.getClasses().success(function(data){
             angular.forEach(data, function(value, key){
                 $scope.classes.push(value);
@@ -53,7 +51,7 @@ studentCtrl.controller('studentController', function($scope, $window, Student, A
      * 
      * @returns {undefined}
      */
-    $scope.getStudentSelections = function(){
+    $scope.selectStudentClasses = function(){
         $scope.message = '';
         angular.forEach($scope.classes, function(clas, key){
             if(clas.selected){
@@ -70,6 +68,43 @@ studentCtrl.controller('studentController', function($scope, $window, Student, A
             $scope.message = data.message;
             alert($scope.message);
         });       
+    };
+
+    /**
+     *This method resizes the panels according to the number of classes taken by a student.
+     *
+     */
+    $scope.resizePanel = function(){
+        if($scope.classes_taken.length > 3){
+            return "col-md-4 panel panel-info";
+        }
+        return "panel panel-info";
+    };
+
+    /**
+     * This method allows a student to remove classes from the list of classes that they will be taking.
+     * 
+     * @returns {undefined}
+     */
+    $scope.removeStudentClasses = function(){
+        $scope.message = '';
+        angular.forEach($scope.classes_taken, function(clas, key){
+            if(clas.selected){
+                 $scope.selectedRemove.push(clas._id);
+            }
+        });
+        
+        //create an object to hold the array of ids of selectedRemove
+        $scope.objRemove = {
+            selections: $scope.selectedRemove
+        };
+        
+        //call a service to remove the classes selected from the database
+        Student.removeSelections($scope.userData.id, $scope.objRemove).success(function(data){
+            $scope.selectedRemove = [];
+            $scope.message = data.message;
+            alert($scope.message);
+        });          
     };
    
 });

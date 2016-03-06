@@ -1,28 +1,29 @@
 <div class="container">
       <div class="row row-offcanvas row-offcanvas-right">
-        <div class="col-xs-12 col-sm-9">
+        <div class="col-xs-12 col-sm-9 scrollable">
           <p class="pull-right visible-xs">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
+        
+            <div scroll-glue id="post-stream">
+              
+                  <div class="post" ng-repeat="msg in messages | orderBy:'created_at':false" ng-class-odd="'odd'" ng-class-even="'even'"> 
+                      <p ng-bind-html="msg.message">{{msg.message}}</p>
+                      <small> by @{{msg.sender}}</small>
+                      <small class="pull-right">{{msg.created_at | date:"h:mma 'on' MMM d, y"}}</small>
+                  </div>
+            </div>
+      
+            <div class="clearfix">
+              <form ng-submit="sendMessage()">
+                  <hr>
+                  <small>Be sure to post <b>serious</b> questions. Any answer provided should be based on <b>facts</b> NOT <b>opinions</b>. <i> (Please provide <b>references</b> where possible)</i></small>
+                  <textarea name="" ng-model="msgData.message" ui-tinymce="tinymceOptions" required></textarea>
+                  <button class="btn submit-btn pull-right" type="submit">Post <span class="glyphicon glyphicon-send"></span></button>
+              </form>
+              <br/>
+            </div>
           
-          <h4>Class Messages</h4>
-          <div scroll-glue id="post-stream" class="pre-scrollable">
-            
-                <div class="post" ng-repeat="msg in messages | orderBy:'created_at':false" ng-class-odd="'odd'" ng-class-even="'even'"> 
-                    <p>{{msg.message}}</p>
-                    <small> by @{{msg.sender}}</small>
-                    <small class="pull-right">{{msg.created_at | date:"h:mma 'on' MMM d, y"}}</small>
-                </div>
-          </div>
-    
-          <div class="clearfix">
-            <form ng-submit="sendMessage()">
-                <hr>
-                <textarea required class="form-control" maxlength="200" rows="3" placeholder="Comments, posts, suggestions, questions..." ng-model="msgData.message"></textarea>
-                <button class="btn submit-btn pull-right" type="submit">Send <span class="glyphicon glyphicon-send"></span></button>
-            </form>
-            <br/>
-        </div>
         </div>
 
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
@@ -95,17 +96,17 @@
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
-                          <span class="glyphicon glyphicon-book"></span> My Classes
+                          <span class="glyphicon glyphicon-book"></span> Class options
                       </a>
                     </h4>
                   </div>
                   <div id="collapseTwo" class="panel-collapse collapse in">
                     <div class="panel-body">
                       <ul class="nav">
-                        <li ng-controller="instrClassController" class="active" ng-repeat="class in classes_taught">
-                          <a href="" data-toggle='modal' data-target='#newClass'>
-                          <i class="glyphicon glyphicon-plus"></i>
-                          {{class.class_name}} </a>
+                        <li class="active">
+                          <a href="#/resourses">
+                          <i class="glyphicon glyphicon-floppy-saved"></i>
+                          Resourses</a>
                         </li>
                       </ul>
                     </div>

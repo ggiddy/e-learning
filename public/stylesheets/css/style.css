@@ -48,6 +48,8 @@ a {
 }
 
 .scrollable {
-    overflow: scroll;
-    height: 50%;
+	height: 540px;
+    overflow-x: hidden;
+	overflow-y: auto; 
+
 }

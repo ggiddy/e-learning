@@ -17,6 +17,9 @@
     "tests"
   ],
   "dependencies": {
-    "angular-scroll-glue": "^2.0.6"
+    "angular-scroll-glue": "^2.0.6",
+    "angular-bootstrap": "^1.2.1",
+    "angular-ui-tinymce": "latest",
+    "angular-dropzone": "^0.1.2"
   }
 }

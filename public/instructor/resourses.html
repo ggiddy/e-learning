@@ -1,0 +1,146 @@
+<div class="container">
+      <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-12 col-sm-9">
+          <div class="DemoController as ctrl">
+            <form method='post' 
+                  enctype="multipart/form-data" 
+                  class="dropzone"
+                  ng-dropzone
+                  dropzone = "dropzone" 
+                  dropzone-config="dropzoneConfig"
+                  event-handlers="{'addedfile': dzAddedFile}">
+
+          
+            </form>
+          </div>
+          
+          <h3>Class Resourses</h3>
+
+        </div>
+
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+          <div class="list-group">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-success">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                          <span class="glyphicon glyphicon-user"></span> Profile
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-body">
+      
+                        <div class="row profile">
+                        <div class="col-md-11">
+                          <div class="profile-sidebar">
+                            <!-- SIDEBAR USERPIC -->
+                            <div class="profile-userpic">
+                                <img src="/images/admin/giddy.jpg" class="img-responsive" alt="<span class='glyphicon glyphicon-user'></span>">
+                            </div>
+                            <!-- END SIDEBAR USERPIC -->
+                            <!-- SIDEBAR USER TITLE -->
+                            <div class="profile-usertitle">
+                              <div class="profile-usertitle-name text-center"><br/>
+                                {{ userData.first_name + ' ' + userData.last_name }}
+                              </div><br/>
+                              <div class="text-center">
+                                  <a class="btn btn-xs btn-danger">{{userData.user_type}}</a>
+                              </div>
+                            </div>
+                            <!-- END SIDEBAR USER TITLE -->
+                            
+                            <!-- SIDEBAR MENU -->
+                            <div class="profile-usermenu">
+                              <ul class="nav">
+                                <li class="active">
+                                  <a href="#">
+                                  <i class="glyphicon glyphicon-home"></i>
+                                  Overview </a>
+                                </li>
+                                <li>
+                                  <a href="" data-toggle='modal' data-target='#accountSettings'>
+                                  <i class="glyphicon glyphicon-user"></i>
+                                  Account Settings </a>
+                                </li>
+                                <li>
+                                  <a href="" target="_blank">
+                                  <i class="glyphicon glyphicon-ok"></i>
+                                  Tasks </a>
+                                </li>
+                                <li>
+                                  <a href="">
+                                  <i class="glyphicon glyphicon-flag"></i>
+                                  Help </a>
+                                </li>
+                              </ul>
+                            </div>
+                            <!-- END MENU -->
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="panel panel-success">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+                          <span class="glyphicon glyphicon-book"></span> Class options
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseTwo" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                      <ul class="nav">
+                        <li class="active">
+                          <a href="#/resourses">
+                          <i class="glyphicon glyphicon-floppy-saved"></i>
+                          Resourses</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+          </div>
+        </div><!--/span-->
+      </div><!--/row-->
+    </div><!--/.container-->
+
+    
+    
+    
+    
+    <!--Modal that contains the form to edit account settings-->
+        <div class="modal fade" id="accountSettings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header success">
+                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                  <h4 class="modal-title text-center" id="myModalLabel">Change Password</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-4">
+                                <form method="post" ng-submit="changePassword()">
+                                    Old Password<input type="password" name="old_password" ng-model="adminData.old_password" class="form-control"><br/>
+                                    New Password<input type="password" name="new_password" ng-model="adminData.new_password" class="form-control"><br/>
+                                    Confirm New Password<input type="password" name="conf_password" class="form-control"><br/>
+                                    <button type="submit" id="submitChangesBtn" class="btn btn-danger">Confirm</button>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>                    
+                </div>
+              </div>
+            </div>
+            <script>
+             
+                $('#submitChangesBtn').click(function(){ $('#accountSettings').modal('hide'); });
+            </script>
+        </div>

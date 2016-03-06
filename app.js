@@ -15,6 +15,8 @@ var instructor = require('./routes/instructor')(io);
 var index = require('./routes/index')(io);
 var student  = require('./routes/student')();
 var access = require('./routes/access_middleware')();
+var resourses = require('./routes/resourses')(__dirname);
+
 mongoose.connect(config.database);
 
 var app = express();
@@ -41,6 +43,7 @@ app.use('/admin', administrator);
 app.use('/instructor', instructor);
 app.use('/student', student);
 app.use('/access', access);
+app.use('/resourses', resourses);
 
 //Add some socket events
 

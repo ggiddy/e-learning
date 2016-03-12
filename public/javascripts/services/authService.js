@@ -131,15 +131,15 @@ authService.factory('authToken', function($window){
     var authTokenFactory = {};
     
     authTokenFactory.getToken = function(){
-        return $window.localStorage.getItem('token');
+        return $window.sessionStorage.getItem('token');
     };
     
     authTokenFactory.setToken = function(token){
         if(token){
-            return $window.localStorage.setItem('token', token);
+            return $window.sessionStorage.setItem('token', token);
         }
         
-        return $window.localStorage.removeItem('token');
+        return $window.sessionStorage.removeItem('token');
     };
     
     authTokenFactory.setUserData = function(user_data){

@@ -11,7 +11,7 @@ userCtrl.controller('createAdminController', function($scope, $location, $window
         User.createAdmin($scope.userData).success(function(data){
             $scope.userData = {first_name: '', last_name: '', email_address: '', password: '', user_type: 'admin'};
             $scope.message = data.message;
-            $window.localStorage.setItem('token', data.token);
+            $window.sessionStorage.setItem('token', data.token);
             
             return $location.path('/admin');
         });
@@ -27,7 +27,7 @@ userCtrl.controller('createStudentController', function($scope, $location, $wind
         User.createStudent($scope.userData).success(function(data){
             $scope.userData = {first_name: '', last_name: '', email_address: '', password: '', admission_no: '', faculty: '', user_type: 'student'};
             $scope.message = data.message;
-            $window.localStorage.setItem('token', data.token);
+            $window.sessionStorage.setItem('token', data.token);
             
             return $location.path('/student');
         });

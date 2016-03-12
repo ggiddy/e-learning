@@ -7,10 +7,16 @@
         
             <div scroll-glue id="post-stream">
               
-                  <div class="post" ng-repeat="msg in messages | orderBy:'created_at':false" ng-class-odd="'odd'" ng-class-even="'even'"> 
-                      <p ng-bind-html="msg.message">{{msg.message}}</p>
-                      <small> by @{{msg.sender}}</small>
-                      <small class="pull-right">{{msg.created_at | date:"h:mma 'on' MMM d, y"}}</small>
+                  <div class="col-sm-6 col-md-12" ng-repeat="msg in messages | orderBy:'created_at':false">
+                    <div class="thumbnail">
+                      <div class="caption">
+                        <p ng-bind-html="msg.message">{{msg.message}}</p>
+                        <span class="bg-warning">
+                          <small> <strong>by:</strong> {{msg.sender}}</small>
+                        </span>
+                        <small class="pull-right bg-warning"><span class="glyphicon glyphicon-time"></span> {{msg.created_at | date:"h:mma 'on' MMM d, y"}}</small>
+                      </div>
+                    </div>
                   </div>
             </div>
       
@@ -62,17 +68,17 @@
                             <!-- SIDEBAR MENU -->
                             <div class="profile-usermenu">
                               <ul class="nav">
-                                <li class="active">
+                                <!--<li class="active">
                                   <a href="#">
                                   <i class="glyphicon glyphicon-home"></i>
                                   Overview </a>
-                                </li>
+                                </li>-->
                                 <li>
                                   <a href="" data-toggle='modal' data-target='#accountSettings'>
                                   <i class="glyphicon glyphicon-user"></i>
                                   Account Settings </a>
                                 </li>
-                                <li>
+                                <!--<li>
                                   <a href="" target="_blank">
                                   <i class="glyphicon glyphicon-ok"></i>
                                   Tasks </a>
@@ -81,7 +87,7 @@
                                   <a href="">
                                   <i class="glyphicon glyphicon-flag"></i>
                                   Help </a>
-                                </li>
+                                </li>-->
                               </ul>
                             </div>
                             <!-- END MENU -->
@@ -104,7 +110,7 @@
                     <div class="panel-body">
                       <ul class="nav">
                         <li class="active">
-                          <a href="#/resourses">
+                          <a href="#/resourses/{{class_id}}">
                           <i class="glyphicon glyphicon-floppy-saved"></i>
                           Resourses</a>
                         </li>

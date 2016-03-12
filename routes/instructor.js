@@ -100,11 +100,11 @@ module.exports = function(io){
                         return res.status(500).send(err);
                     }
 
-                    var removed = [];
+                    var remained_classes = [];
                     async.each(inst.classes_taught, 
                     function(the_class, callback){
                         Class.findById(the_class, function(err, result){
-                            removed.push(result);
+                            remained_classes.push(result);
                             callback();
                         });
                     }, 
@@ -115,12 +115,11 @@ module.exports = function(io){
                         
                         //emit event so that the class is added in real time
                         var remevent = req.params.id + 'remove';
-                        io.emit(remevent, removed);
+                        io.emit(remevent, remained_classes);
 
                         return res.json({success: true, message: 'Successfully removed classes'});
                     }); 
-                })
-                
+                });   
             });
         });
     });
@@ -128,7 +127,10 @@ module.exports = function(io){
     //router to return all classes taught given the instructor's id
     router.get('/get_classes/:id', function(req, res){
         
-        Instructor.findById(req.params.id).select('classes_taught').exec(function(err, inst){ 
+        Instructor.findById(req.params.id).select('classes_taught').exec(function(err, inst){
+            if(err){
+             
+            } 
             var taught = [];
             var items = inst['classes_taught'];
             async.each(items, function(item, callback){
@@ -174,6 +176,6 @@ module.exports = function(io){
             return res.json({success: true, message: 'Successfully sent'});
         });
     });
-
+    
     return router;
 };

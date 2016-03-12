@@ -11,7 +11,7 @@ var Class = require('../models/class');
 //middleware to confirm it is student calling these routes
 router.use('/access', access);
 
-module.exports = function(){
+module.exports = function(io){
     
     classes_taken = [];
     done = false;
@@ -56,10 +56,24 @@ module.exports = function(){
                 if(err){
                     return res.status(500).send(err);
                 }
-                        
-                return res.json({
-                    success: true,
-                    message: 'Successfully added classes'
+
+                var to_take = [];
+                async.each(req.body.selections, 
+                    function(the_class, callback){
+                        Class.findById(the_class, function(err, result){
+                            to_take.push(result);
+                            callback();
+                        });
+                    }, 
+                    function(err){
+                        if(err){
+                            return res.status(500).send(err);
+                        }
+
+                        //emit event so that the class is added in real time
+                        io.emit(req.params.id, to_take);
+
+                        return res.json({success: true, message: 'Successfully added classes'});
                 });
             });
         });
@@ -75,7 +89,7 @@ module.exports = function(){
             //loop though the selections array and remove each of its contents from the database
             for(var i=0; i<req.body.selections.length; i++){
 
-                //first check to see if the class to be removed exists
+                //first check to see if the class to be remained_classes exists
                 if(student.classes_taken.indexOf(req.body.selections[i]) !== -1){
                     student.classes_taken.remove(req.body.selections[i]);
                 }  
@@ -85,10 +99,30 @@ module.exports = function(){
                 if(err){
                     return res.status(500).send(err);
                 }
+                Student.findById(req.params.id).select('classes_taken').exec(function(err, student){
+                    if(err){
+                        return res.status(500).send(err);
+                    }
+
+                    var remained_classes = [];
+                    async.each(student.classes_taken, 
+                    function(the_class, callback){
+                        Class.findById(the_class, function(err, result){
+                            remained_classes.push(result);
+                            callback();
+                        });
+                    }, 
+                    function(err){
+                        if(err){
+                            return res.status(500).send(err);
+                        }
                         
-                return res.send({
-                    success: true,
-                    message: 'Successfully removed classes'
+                        //emit event so that the class is added in real time
+                        var remevent = req.params.id + 'remove';
+                        io.emit(remevent, remained_classes);
+
+                        return res.json({success: true, message: 'Successfully removed classes'});
+                    }); 
                 });
             });
         });

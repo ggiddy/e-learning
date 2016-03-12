@@ -53,3 +53,6 @@ a {
 	overflow-y: auto; 
 
 }
+.circle-base {
+	border-radius: 50%;
+}

@@ -13,9 +13,9 @@ var io = socket_io();
 var administrator = require('./routes/admin')(io);
 var instructor = require('./routes/instructor')(io);
 var index = require('./routes/index')(io);
-var student  = require('./routes/student')();
+var student  = require('./routes/student')(io);
 var access = require('./routes/access_middleware')();
-var resourses = require('./routes/resourses')(__dirname);
+var resourses = require('./routes/resourses')(__dirname, io);
 
 mongoose.connect(config.database);
 

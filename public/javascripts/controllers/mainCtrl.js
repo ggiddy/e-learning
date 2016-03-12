@@ -9,10 +9,15 @@ mainCtrl.controller('mainController', function($scope, $rootScope, $location, Au
     $rootScope.$on('$routeChangeStart', function(){
         $rootScope.loggedIn = Auth.isLoggedIn();
         
-        Auth.getUser().success(function(data){
-            $rootScope.user.email_address = data.email_address;
-            $rootScope.user.id = data.id;
-        });
+        if($rootScope.loggedIn){
+            Auth.getUser().success(function(data){
+                $rootScope.user.email_address = data.email_address;
+                $rootScope.user.id = data.id;
+            }); 
+        } else {
+            $location.path('/');
+        }
+        
     });
     
     /**

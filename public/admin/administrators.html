@@ -59,7 +59,7 @@
                             <!-- END SIDEBAR USERPIC -->
                             <!-- SIDEBAR USER TITLE -->
                             <div class="profile-usertitle">
-                              <div class="profile-usertitle-name"><br/>
+                              <div class="profile-usertitle-name text-center"><br/>
                                 {{userData.first_name + ' ' + userData.last_name}}
                               </div><br/>
                               <div class="text-center">
@@ -71,17 +71,17 @@
                             <!-- SIDEBAR MENU -->
                             <div class="profile-usermenu">
                               <ul class="nav">
-                                <li class="active">
+                                <!--<li class="active">
                                   <a href="#">
                                   <i class="glyphicon glyphicon-home"></i>
                                   Overview </a>
-                                </li>
+                                </li>-->
                                 <li>
                                   <a href="" data-toggle='modal' data-target='#accountSettings'>
                                   <i class="glyphicon glyphicon-user"></i>
                                   Account Settings </a>
                                 </li>
-                                <li>
+                                <!--<li>
                                   <a href="" target="_blank">
                                   <i class="glyphicon glyphicon-ok"></i>
                                   Tasks </a>
@@ -90,7 +90,7 @@
                                   <a href="">
                                   <i class="glyphicon glyphicon-flag"></i>
                                   Help </a>
-                                </li>
+                                </li>-->
                               </ul>
                             </div>
                             <!-- END MENU -->
@@ -168,7 +168,7 @@
     </div><!--/.container-->
 
     <!--Modal that contains the form to edit class details-->
-        <div ng-controller="adminController" class="modal fade" id="editClassForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editClassForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -212,7 +212,7 @@
         </div>
     
     <!--Modal that contains the form to add a new class-->
-        <div ng-controller="adminController" class="modal fade" id="newClass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="newClass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -244,7 +244,7 @@
     
     
     <!--Modal that contains the form to edit account settings-->
-        <div ng-controller="adminController" class="modal fade" id="accountSettings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="accountSettings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -273,7 +273,7 @@
         </div>
     
     <!--Modal that carries the admin sign up form-->
-        <div ng-controller="createAdminController" class="modal fade" id="adminSignupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="adminSignupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">

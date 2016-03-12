@@ -3,7 +3,7 @@
 var instructorCtrl = angular.module('instructorCtrl', ['ngSanitize']);
 
 instructorCtrl.controller('instructorController', function($scope, $rootScope, $location, $window, Instr, Admin, socketio){
-
+    
     //object which holds the client's session details
     $scope.userData = {
         id: $window.sessionStorage.getItem('id'),
@@ -171,10 +171,7 @@ instructorCtrl.controller('instructorController', function($scope, $rootScope, $
      *
      */
     $scope.resizePanel = function(){
-        if($scope.classes_taught.length > 3){
-            return "col-md-4 panel panel-success";
-        }
-        return "panel panel-success";
+        return ($scope.classes_taught.length > 3) ? "col-md-4 panel panel-success" : "panel panel-success";
     };
 
 });
@@ -183,6 +180,9 @@ instructorCtrl.controller('instrClassController', function($scope, $scope, $wind
     
     //object that contains the tinyMce configuration options
     $scope.tinymceOptions = {};
+
+    //variable to hold the class id to be used in the resourses page
+    $scope.class_id = $routeParams.classId;
 
     //object that contains data session specific to the logged in user.
     $scope.userData = {

@@ -1,22 +1,45 @@
 <div class="container">
       <div class="row row-offcanvas row-offcanvas-right">
-        <div class="col-xs-12 col-sm-9">
-          <div class="DemoController as ctrl">
+        <div id="uploaddownload" class="col-xs-12 col-sm-9">
+          <div id="upload" class="collapse">
             <form method='post' 
                   enctype="multipart/form-data" 
                   class="dropzone"
                   ng-dropzone
                   dropzone = "dropzone" 
                   dropzone-config="dropzoneConfig"
-                  event-handlers="{'addedfile': dzAddedFile}">
-
-          
+                  event-handlers="{'addedfile': dzAddedFile, 'sending': dzSending}">
             </form>
+            <br/>
           </div>
           
-          <h3>Class Resourses</h3>
+          <div id="download" class="row collapse in">
+            <div class="col-sm-6 col-md-12">
+               <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+                  <input class="form-control" type="text" placeholder="Search resourses" ng-model="search_resourses">
+                </div>
+              </div>
+              <h3>Class Resourses</h3>
+            </div>
+           
 
+            <div class="col-sm-6 col-md-12" ng-repeat="resourse in class_resourses | filter : search_resourses | reverse">
+              <div class="thumbnail">
+                <div class="caption">
+                  <h3><span class="bg-warning">{{resourse.name}}</span></h3>
+                  <p><small><strong>Uploaded By: </strong>{{resourse.uploader}}</small></p>
+                  <p><small><strong>At: </strong>{{resourse.uploaded_at | date:"h:mma 'on' MMM d, y"}}</small></p>
+                  <p>
+                    <a href="{{'resourses/' + resourse.path}}" class="btn btn-info" role="button">Download</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
 
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
           <div class="list-group">
@@ -54,17 +77,17 @@
                             <!-- SIDEBAR MENU -->
                             <div class="profile-usermenu">
                               <ul class="nav">
-                                <li class="active">
+                                <!--<li class="active">
                                   <a href="#">
                                   <i class="glyphicon glyphicon-home"></i>
                                   Overview </a>
-                                </li>
+                                </li>-->
                                 <li>
                                   <a href="" data-toggle='modal' data-target='#accountSettings'>
                                   <i class="glyphicon glyphicon-user"></i>
                                   Account Settings </a>
                                 </li>
-                                <li>
+                                <!--<li>
                                   <a href="" target="_blank">
                                   <i class="glyphicon glyphicon-ok"></i>
                                   Tasks </a>
@@ -73,7 +96,7 @@
                                   <a href="">
                                   <i class="glyphicon glyphicon-flag"></i>
                                   Help </a>
-                                </li>
+                                </li>-->
                               </ul>
                             </div>
                             <!-- END MENU -->
@@ -88,7 +111,7 @@
                   <div class="panel-heading">
                     <h4 class="panel-title">
                       <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
-                          <span class="glyphicon glyphicon-book"></span> Class options
+                          <span class="glyphicon glyphicon-book"></span> Options
                       </a>
                     </h4>
                   </div>
@@ -96,15 +119,19 @@
                     <div class="panel-body">
                       <ul class="nav">
                         <li class="active">
-                          <a href="#/resourses">
-                          <i class="glyphicon glyphicon-floppy-saved"></i>
-                          Resourses</a>
+                          <a data-toggle="collapse" data-parent="#uploaddownload" data-target="#upload">
+                          <i class="glyphicon glyphicon-arrow-up"></i>
+                          Upload</a>
+                        </li>
+                        <li class="active">
+                          <a data-toggle="collapse" data-parent="#uploaddownload" data-target="#upload">
+                          <i class="glyphicon glyphicon-arrow-down"></i>
+                          Download</a>
                         </li>
                       </ul>
                     </div>
                   </div>
                 </div>
-                
               </div>
           </div>
         </div><!--/span-->

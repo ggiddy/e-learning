@@ -2,7 +2,7 @@
 
 var studentCtrl = angular.module('studentCtrl', []);
 
-studentCtrl.controller('studentController', function($scope, $window, Student, Admin){
+studentCtrl.controller('studentController', function($scope, $window, Student, Admin, socketio){
     $scope.userData = {
         id: $window.sessionStorage.getItem('id'),
         first_name: $window.sessionStorage.getItem('first_name'),
@@ -14,7 +14,6 @@ studentCtrl.controller('studentController', function($scope, $window, Student, A
     $scope.selectedRemove = [];
     $scope.classes_taken = [];
     $scope.has_cls = true;
-    
     
     /**
      *This method gets all the classes that an student is currently taking 
@@ -29,6 +28,24 @@ studentCtrl.controller('studentController', function($scope, $window, Student, A
         .success(function(){
             $scope.has_classes();
         });
+
+        //listen to events where the student adds a new class
+        socketio.on($scope.userData.id, function(data){
+            angular.forEach(data, function(value, key){
+                $scope.classes_taken.push(value);
+                $scope.has_classes();
+            });
+        });
+
+        //listen to events where the student adds a class
+        socketio.on($scope.userData.id + 'remove', function(data){
+            $scope.classes_taken = [];
+            angular.forEach(data, function(value, key){
+                $scope.classes_taken.push(value);
+            });
+        
+            $scope.has_classes();
+        }); 
 
         Admin.getClasses().success(function(data){
             angular.forEach(data, function(value, key){
@@ -66,7 +83,6 @@ studentCtrl.controller('studentController', function($scope, $window, Student, A
         Student.insertSelections($scope.userData.id, $scope.objSelections).success(function(data){
             $scope.selectedClasses = [];
             $scope.message = data.message;
-            alert($scope.message);
         });       
     };
 
@@ -75,10 +91,7 @@ studentCtrl.controller('studentController', function($scope, $window, Student, A
      *
      */
     $scope.resizePanel = function(){
-        if($scope.classes_taken.length > 3){
-            return "col-md-4 panel panel-info";
-        }
-        return "panel panel-info";
+        return ($scope.classes_taken.length > 3) ? "col-md-4 panel panel-info" : "panel panel-info";
     };
 
     /**
@@ -103,7 +116,6 @@ studentCtrl.controller('studentController', function($scope, $window, Student, A
         Student.removeSelections($scope.userData.id, $scope.objRemove).success(function(data){
             $scope.selectedRemove = [];
             $scope.message = data.message;
-            alert($scope.message);
         });          
     };
    

@@ -4,6 +4,7 @@ var router = express.Router();
 var Resourse = require('../models/resourses');
 var path = require('path');
 var fs = require('fs');
+var async = require('async');
 
 var join = path.join;
 
@@ -42,8 +43,17 @@ module.exports = function(dir, io){
 
 
 	router.get('/uploads/:id', function(req, res) {
+
 		var file = 'uploads/' + req.params.id;
-		res.download(file);
+
+		Resourse.find({path: file}, function(err, resourse){
+			var filename = resourse[0]['name'];
+			
+			//set the resourse, filename and send it as a download to the client.
+			res.download(file, filename);
+		});
+
+		return;
 	});
 
 	return router;

@@ -30,9 +30,8 @@ router.post('/student/signup', function(req, res) {
     student.email_address = req.body.email_address.toLowerCase();
     student.user_type = req.body.user_type;
     student.faculty = req.body.faculty;
-    student.admission_no = req.body.admission_no;
+    student.admission_no = req.body.admission_no.toUpperCase();
     
-    var token = createToken(student);
     
     student.save(function(err){
         if(err){
@@ -40,8 +39,8 @@ router.post('/student/signup', function(req, res) {
         }
         return res.json({
             success: true, 
-            message: 'New student ' +student.admission_no + ' has been created.', 
-            token: token
+            admission_no: student.admission_no,
+            password: req.body.password
         });
     });
 });

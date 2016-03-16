@@ -15,6 +15,9 @@ authService.factory('Auth', function($q, $http, authToken){
    authFactory.loginAdmin = function(email_address, password){
         return $http.post('/auth/admin/login', {email_address: email_address, password: password})
                .success(function(data){
+                    if(data.message){
+                        alert(data.message);
+                    }
                    authToken.setToken(data.token);
                    
                    var user_data = {
@@ -40,7 +43,7 @@ authService.factory('Auth', function($q, $http, authToken){
         return $http.post('/auth/student/login', {admission_no: admission_no, password: password})
                .success(function(data){
                    if(data.message){
-                       console.log(data.message);
+                       alert(data.message);
                    }
                    
                    authToken.setToken(data.token);
@@ -65,21 +68,25 @@ authService.factory('Auth', function($q, $http, authToken){
     * @returns {object} data
     */
    authFactory.loginInstructor = function(email_address, password){
-        return $http.post('/auth/instructor/login', {email_address: email_address, password: password})
-               .success(function(data){
-                   authToken.setToken(data.token);
-                   
-                   var user_data = {
-                       first_name: data.first_name, 
-                       last_name: data.last_name,
-                       user_type: data.user_type,
-                       id: data.id
-                   };
-                   
-                   authToken.setUserData(user_data);
-                   
-                   return data;
-               });
+    return $http.post('/auth/instructor/login', {email_address: email_address, password: password})
+      .success(function(data){
+          if(data.message){
+              alert(data.message);
+          }
+
+        authToken.setToken(data.token);
+         
+        var user_data = {
+          first_name: data.first_name, 
+          last_name: data.last_name,
+          user_type: data.user_type,
+          id: data.id
+        };
+         
+        authToken.setUserData(user_data);
+         
+        return data;
+     });
    };
    
    /**

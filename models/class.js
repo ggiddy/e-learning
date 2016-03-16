@@ -9,8 +9,9 @@ var classSchema = new mongoose.Schema({
     class_code: {type: String, required: true, index: {unique: true}},
     instructor: {type: mongoose.Schema.Types.ObjectId, ref: 'Instructor'},
     class_venue: {type: String, required: true},
-    class_time: {type: Date, default: Date.now()},
-    class_duration: {type: Number, required: true} //later formulate a method that calculates this from start time and end time.
+    class_time: {type: String},
+    class_duration: {type: String},
+    status: {type: String, default: 'Active'} 
 });
 
 module.exports = mongoose.model('Class', classSchema);

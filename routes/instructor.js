@@ -47,7 +47,7 @@ module.exports = function(io){
             //loop though the selections array and add each of its contents to the database
             for(var i=0; i<req.body.selections.length; i++){
                 if(instructor.classes_taught.indexOf(req.body.selections[i]) === -1){
-                    instructor.classes_taught.push(req.body.selections[i]);
+                    instructor.classes_taught.addToSet(req.body.selections[i]);
                 }  
             }
             instructor.save(function(err){
@@ -127,23 +127,27 @@ module.exports = function(io){
     //router to return all classes taught given the instructor's id
     router.get('/get_classes/:id', function(req, res){
         
-        Instructor.findById(req.params.id).select('classes_taught').exec(function(err, inst){
+        Instructor.find({ $and: [{_id: req.params.id}, { classes_taught: { $exists: true }}]}).exec(function(err, inst){
             if(err){
              
             } 
             var taught = [];
-            var items = inst['classes_taught'];
-            async.each(items, function(item, callback){
-                Class.findById(item, function(err, result){
-                    taught.push(result);
-                    callback(); 
+
+            //check if the instructor is teaching any classes
+            if(inst){
+                var items = inst[0]['classes_taught'];
+                async.each(items, function(item, callback){
+                    Class.findById(item, function(err, result){
+                        taught.push(result);
+                        callback(); 
+                    });
+                }, function(err){
+                    if(err){
+                        return res.sendStatus(500).send(err);
+                    }
+                    return res.json(taught);
                 });
-            }, function(err){
-                if(err){
-                    return res.sendStatus(500).send(err);
-                }
-                return res.json(taught);
-            });
+            }
         });
     });
     

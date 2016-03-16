@@ -22,6 +22,7 @@ router.use('/access', access);
 module.exports = function(io){
     
     router.route('/class')
+
             //route to create a new class
             .post(function(req, res){
                var new_class = new Class();
@@ -32,16 +33,20 @@ module.exports = function(io){
                new_class.class_time = req.body.class_time;
                new_class.class_duration = req.body.class_duration;
                
-               new_class.save(function(err){
+               new_class.save(function(err, new_cls){
                    if(err){
                        return res.send(err);
                    }
+
+                   //emit event of new class
+                   io.emit('newclass', new_cls);
+
                    return res.json({
                        success: true, 
                        message: 'Class ' + new_class.class_code + ': ' + new_class.class_name + ' successfully added'});
                });
             })
-            
+
             //router to get all available classes
             .get(function(req, res){
                 Class.find({}, function(err, classes){
@@ -66,24 +71,26 @@ module.exports = function(io){
         })
 
         //modify specified class
-        .put(function(req, res){
+        .patch(function(req, res){
             Class.findById(req.params.id, function(err, the_class){
                 if(err){
                     return res.status(500).send(err);
                 }
-                the_class.class_name = req.body.class_name;
-                the_class.class_code = req.body.class_code;
-                the_class.instructor = req.body.instructor;
-                the_class.class_venue = req.body.class_venue;
-                the_class.class_time = req.body.class_time;
-                the_class.class_duration = req.body.class_duration;
+                console.log(req.body.class_time);
+                the_class.class_name = req.body.class_name || the_class.class_name;
+                the_class.class_code = req.body.class_code || the_class.class_code;
+                the_class.instructor = req.body.instructor || the_class.instructor;
+                the_class.class_venue = req.body.class_venue || the_class.class_venue;
+                the_class.class_time = req.body.class_time || the_class.class_time;
+                the_class.class_duration = req.body.class_duration || the_class.class_duration;
 
                 the_class.save(function(err, modified_class){
                     if(err){
                         return res.status(500).send(err);
                     }
                     
-                    return res.json(modified_class);
+                    io.emit('modifiedclass', modified_class);
+                    return res.json({success: false, message: 'Successfully modified class: '+modified_class.class_code});
                 });
             });
         })
@@ -123,20 +130,23 @@ module.exports = function(io){
     
     //This route signs up an instructor to the system
     router.post('/instructor/signup', function(req, res) {
-    var instructor = new Instructor();
+        var instructor = new Instructor();
+
         instructor.first_name = req.body.first_name;
         instructor.last_name = req.body.last_name;
         instructor.password = auth.createHash(req.body.password);
         instructor.email_address = req.body.email_address.toLowerCase();
         instructor.user_type = req.body.user_type;
-        instructor.classes_taught = req.body.classes_taught;
         instructor.faculty = req.body.faculty;
 
         instructor.save(function(err){
             if(err){
                 return res.send(err);
             }
+
+            //emit event of new instructor
             io.emit('newinstructor', instructor);
+
             return res.json({
                 success: true, 
                 message: 'New instructor: ' +instructor.email_address + ' has been created.', 
@@ -334,6 +344,70 @@ module.exports = function(io){
                     success: true, 
                     message: message,
                     status: admin.status
+                });
+            });
+        });
+    });
+
+    router.patch('/archive_instructor/:id', function(req, res){
+        
+        //first select the user with the specified id
+        Instructor.findById(req.params.id, function(err, instructor){
+            if(err){
+                return res.status(500).send(err);
+            }
+            
+            if(req.body.status){
+                instructor.status = 'Active';
+                var message = 'Instructor ' + instructor.email_address + ' successfully restored';
+            } else {
+                instructor.status = 'Inactive';
+                message = 'Instructor ' + instructor.email_address + ' successfully archived';
+            }
+            
+            instructor.save(function(err){
+                if(err){
+                    return res.status(500).send(err);
+                }
+                
+                return res.json({
+                    success: true, 
+                    message: message,
+                    status: instructor.status
+                });
+            });
+        });
+    });
+
+    /**
+     *Route to activate or deactivate class
+     *
+     */
+     router.patch('/archive_class/:id', function(req, res){
+        
+        //first select the user with the specified id
+        Class.findById(req.params.id, function(err, cls){
+            if(err){
+                return res.status(500).send(err);
+            }
+            
+            if(req.body.status){
+                cls.status = 'Active';
+                var message = 'Class ' + cls.class_code + ' successfully restored';
+            } else {
+                cls.status = 'Inactive';
+                message = 'Class ' + cls.class_code + ' successfully archived';
+            }
+            
+            cls.save(function(err){
+                if(err){
+                    return res.status(500).send(err);
+                }
+                
+                return res.json({
+                    success: true, 
+                    message: message,
+                    status: cls.status
                 });
             });
         });

@@ -14,7 +14,6 @@
                   <th>Class Code</th>
                   <th>Class Name</th>
                   <th>Status</th>
-                  <th>Lecturer</th>
                   <th>Venue</th>
                   <th>Start-time</th>
                   <th>Edit</th>
@@ -25,13 +24,12 @@
                 <tr ng-repeat="class in classes"> 
                   <td>{{class.class_code}}</td>
                   <td>{{class.class_name}}</td>
-                  <td><button class="btn btn-sm btn-info">{{"Active"}}</button></td>
-                  <td>{{'Mr. So And So'}}</td>
+                  <td><button ng-class="displayStatus(class.status)">{{class.status}}</button></td>
                   <td>{{class.class_venue}}</td>
                   <td >{{class.class_time | date:"h:mma"}}</td>
                   <td><a href="" data-id="{{ class }}" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editClassForm">
                           <span class="glyphicon glyphicon-edit"></span> Edit</a></td>
-                  <td><a href="" class="btn btn-sm btn-danger" ng-click="">Archive</a></td>
+                  <td><a href="" ng-class="archiveBtnColor(class.status)" ng-click="archiveClass(class._id, class.status); clicked(class, $event)">{{action}}</a></td>
                 </tr>
               </tbody>
             </table>
@@ -151,11 +149,11 @@
                                   <i class="glyphicon glyphicon-bullhorn"></i>
                                   Instructors </a>
                                 </li>
-                                <li>
+                                <!--<li>
                                   <a href="#/experts">
                                   <i class="glyphicon glyphicon-globe"></i>
                                   Experts </a>
-                                </li>
+                                </li>-->
                                 <li>
                                   <a href="#/students">
                                   <i class="glyphicon glyphicon-book"></i>
@@ -183,12 +181,13 @@
                     <div class="container form-horizontal">
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
-                                <form method="post" ng-submit="signUpAdmin()">
-                                    Class Code<input type="text" name="class_code" ng-model="userData.first_name" class="form-control"><br/>
-                                    Class Name<input type="text" name="class_name" ng-model="userData.last_name" class="form-control"><br/>
-                                    Class Duration<input type="text" name="class_duration" ng-model="userData.email_address" class="form-control"><br/>
-                                    Start-time<input type="type" name="class_time" ng-model="userData.password" class="form-control"><br/>
-                                    Lecturer<input type="password" name="password" ng-model="userData.password" class="form-control"><br/>
+                                <form method="post" ng-submit="editClass(0)">
+                                    <input id="class_id" type="hidden" name="class_id" ng-bind="editClassData.class_id" class="form-control">
+                                    Class Code<input id="class_code" type="text" name="class_code" ng-model="editClassData.class_code" class="form-control"><br/>
+                                    Class Name<input id="class_name" type="text" name="class_name" ng-model="editClassData.class_name" class="form-control"><br/>
+                                    Class Venue<input id="class_venue" type="text" name="class_venue" ng-model="editClassData.class_venue" class="form-control"><br/>
+                                    Class Duration<input id="class_duration" type="text"  name="class_duration" ng-model="editClassData.class_duration" class="form-control"><br/>
+                                    Start-time<input id="class_time" type="time" name="class_time" ng-model="editClassData.classtime" class="form-control"><br/>
                                     <button type="submit" id="submitBtn" class="btn btn-danger">Submit</button>
                                 </form>
                             </div>
@@ -206,9 +205,11 @@
                     var classId = $(e.relatedTarget).data('id');
                     
                     //populate the textboxes
+                    $(e.currentTarget).find('input[name="class_id"]').val(classId._id);
                     $(e.currentTarget).find('input[name="class_code"]').val(classId.class_code);
                     $(e.currentTarget).find('input[name="class_name"]').val(classId.class_name);
                     $(e.currentTarget).find('input[name="class_duaration"]').val(classId.class_duration);
+                    $(e.currentTarget).find('input[name="class_venue"]').val(classId.class_venue);
                     $(e.currentTarget).find('input[name="class_time"]').val(classId.class_time);
                 });
                 
@@ -231,8 +232,8 @@
                                 <form method="post" ng-submit="newClass()">
                                     Class Code<input type="text" name="class_code" ng-model="classData.class_code" class="form-control"><br/>
                                     Class Name<input type="text" name="class_name" ng-model="classData.class_name" class="form-control"><br/>
-                                    Class Duration<input type="text" name="class_duration" ng-model="classData.class_duration" class="form-control"><br/>
-                                    Start-time<input type="type" name="class_time" ng-model="classData.class_time" class="form-control"><br/>
+                                    Class Duration(hours)<input type="number" name="class_duration" ng-model="classData.class_duration" class="form-control"><br/>
+                                    Start-time<input type="time" name="class_time" ng-model="classData.class_time" class="form-control"><br/>
                                     Class Venue<input type="text" name="class_venue" ng-model="classData.class_venue" class="form-control"><br/>
                                     <button type="submit" id="submitClassBtn" class="btn btn-danger">Submit</button>
                                 </form>

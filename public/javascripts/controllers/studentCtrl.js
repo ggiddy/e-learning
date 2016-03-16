@@ -19,7 +19,6 @@ studentCtrl.controller('studentController', function($scope, $window, Student, A
      *This method gets all the classes that an student is currently taking 
      */
     angular.element(document).ready(function(){
-        Student.getClasses($scope.userData.id);
         Student.getClasses($scope.userData.id).success(function(data){
             angular.forEach(data, function(value, key){
                 $scope.classes_taken.push(value);

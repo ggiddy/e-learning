@@ -12,6 +12,10 @@ adminService.factory('Admin', function($http){
     adminFactory.addClass = function(classData){
         return $http.post('/admin/class', classData);
     };
+
+    adminFactory.editClassDetails = function(id, editClassData){
+        return $http.patch('/admin/class/'+ id, editClassData);
+    };
     
     adminFactory.getAdmins = function(){
         return $http.get('/admin/admins');
@@ -51,6 +55,14 @@ adminService.factory('Admin', function($http){
     
     adminFactory.archiveAdminAccount = function(id, data){
         return $http.patch('/admin/archive_admin/' + id, data);
+    };
+
+    adminFactory.archiveInstructorAccount = function(id, data){
+        return $http.patch('/admin/archive_instructor/' + id, data);
+    };
+
+    adminFactory.archiveCls = function(id, data){
+        return $http.patch('/admin/archive_class/' + id, data);
     };
     
     return adminFactory;

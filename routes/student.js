@@ -131,20 +131,25 @@ module.exports = function(io){
     //router to return all classes taken given the student's id
     router.get('/get_classes/:id', function(req, res){
         
-        Student.findById(req.params.id).select('classes_taken').exec(function(err, student){ 
+        //Query the students model where the id is req.params.id and the student has registered for classes
+        Student.find({ $and: [{_id: req.params.id}, { classes_taken: { $exists: true }}]}).exec(function(err, student){ 
             var taken = [];
-            var items = student['classes_taken'];
-            async.each(items, function(item, callback){
-                Class.findById(item, function(err, result){
-                    taken.push(result);
-                    callback(); 
+            
+            //first check if the student is taking any classes
+            if(student){
+                var items = student[0]['classes_taken'];
+                async.each(items, function(item, callback){
+                    Class.findById(item, function(err, result){
+                        taken.push(result);
+                        callback(); 
+                    });
+                }, function(err){
+                    if(err){
+                        return res.sendStatus(500).send(err);
+                    }
+                    return res.json(taken);
                 });
-            }, function(err){
-                if(err){
-                    return res.sendStatus(500).send(err);
-                }
-                return res.json(taken);
-            });
+            }
         });
     });
     

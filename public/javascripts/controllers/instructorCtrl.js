@@ -30,7 +30,16 @@ instructorCtrl.controller('instructorController', function($scope, $rootScope, $
     //flag that shows whether the instructor has classes
     $scope.has_cls = true;
     
-    
+    /**
+     *listen to socket.io events
+     */
+
+
+    //listen for addition of new classes
+    socketio.on('newclass', function(data){
+        $scope.classes.push(data);
+    });
+
     /**
      *This method gets all the classes that an instructor is currently teaching on page load
      *

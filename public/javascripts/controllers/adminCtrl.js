@@ -370,5 +370,18 @@ adminCtrl.controller('adminController', function($scope, $window, $location, Aut
         //change the button color depending on the admin status.
         return status === 'Active' ? 'btn btn-sm btn-danger' : 'btn btn-sm btn-success';     
     };
+
+    //variable that determines whether the sidebar is visible or not.
+    $scope.isActive = false;
+
+    //toggle the status of the isActive
+    $scope.toggleCanvas = function(){
+        $scope.isActive = !$scope.isActive;
+    };
+
+    //assign classes depending on whether the sidebar will be shown or not.
+    $scope.canvasClass = function(){
+        return $scope.isActive ? 'row row-offcanvas row-offcanvas-right active' : 'row row-offcanvas row-offcanvas-right';
+    }
     
 });

@@ -41,7 +41,7 @@ module.exports = function(dir, io){
 		});
 	});
 
-
+	//route to download resourses
 	router.get('/uploads/:id', function(req, res) {
 
 		var file = 'uploads/' + req.params.id;
@@ -50,10 +50,8 @@ module.exports = function(dir, io){
 			var filename = resourse[0]['name'];
 			
 			//set the resourse, filename and send it as a download to the client.
-			res.download(file, filename);
+			return res.download(file, filename);
 		});
-
-		return;
 	});
 
 	return router;

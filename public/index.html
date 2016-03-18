@@ -65,17 +65,17 @@
                 <div class="container-fluid">
                   <!-- Brand and toggle get grouped for better mobile display -->
                   <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#e-learning-navbar">
                       <span class="sr-only">Toggle navigation</span>
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-book"> e-learning</span></a>
+                    <a class="navbar-brand" href=""><span class="glyphicon glyphicon-book"> e-learning</span></a>
                   </div>
 
                   <!-- Collect the nav links, forms, and other content for toggling -->
-                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <div class="collapse navbar-collapse" id="e-learning-navbar">
                     <ul class="nav navbar-nav navbar-right">
                       <li class="dropdown">
                           <a href="" ng-show="!loggedIn" class="dropdown-toggle" data-toggle="dropdown">Signup <span class="caret"></span></a>
@@ -128,8 +128,8 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
                                 <form method="post" ng-submit="adminLogin()">
-                                    Email Address<input type="text" name="email_address" ng-model="email_address" class="form-control" placeholder="example@gmail.com"><br/>
-                                    Password<input type="password" name="password" ng-model="password" class="form-control"><br/>
+                                    Email Address<input type="email" name="email_address" ng-model="email_address" class="form-control" required><br/>
+                                    Password<input type="password" name="password" ng-model="password" class="form-control" required><br/>
                                     <button type="submit" id="loginBtn" class="btn btn-success">Login</button>
                                 </form>
                             </div>
@@ -157,12 +157,12 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
                                 <form method="post" ng-submit="signUpStudent()">
-                                    First Name<input type="text" name="first_name" ng-model="userData.first_name" class="form-control"><br/>
-                                    Last Name<input type="text" name="last_name" ng-model="userData.last_name" class="form-control"><br/>
-                                    Email Address<input type="text" name="email_address" ng-model="userData.email_address" class="form-control"><br/>
-                                    Admission no.<input type="text" name="admission_no" ng-model="userData.admission_no" class="form-control"><br/>
-                                    Faculty<input type="text" name="faculty" ng-model="userData.faculty" class="form-control"><br/>
-                                    Password<input type="password" name="password" ng-model="userData.password" class="form-control"><br/>
+                                    First Name<input type="text" name="first_name" ng-model="userData.first_name" class="form-control" required><br/>
+                                    Last Name<input type="text" name="last_name" ng-model="userData.last_name" class="form-control" required><br/>
+                                    Email Address<input type="email" name="email_address" ng-model="userData.email_address" class="form-control" required><br/>
+                                    Admission no.<input type="text" name="admission_no" ng-model="userData.admission_no" class="form-control" required><br/>
+                                    Faculty<input type="text" name="faculty" ng-model="userData.faculty" class="form-control" required><br/>
+                                    Password<input type="password" name="password" ng-model="userData.password" class="form-control" required><br/>
                                     <button type="submit" id="signupBtn" class="btn btn-danger">Signup</button>
                                 </form>
                             </div>
@@ -189,8 +189,8 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
                                 <form method="post" ng-submit="studentLogin()">
-                                    Admission no.<input type="text" name="admission_no" ng-model="admission_no" class="form-control"><br/>
-                                    Password<input type="password" name="password" ng-model="password" class="form-control"><br/>
+                                    Admission no.<input type="text" name="admission_no" ng-model="admission_no" class="form-control" required><br/>
+                                    Password<input type="password" name="password" ng-model="password" class="form-control" required><br/>
                                     <button type="submit" id="loginBtnStud" class="btn btn-success">Login</button>
                                 </form>
                             </div>
@@ -217,8 +217,8 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
                                 <form method="post" ng-submit="instructorLogin()">
-                                    Email Address<input type="text" name="email_address" ng-model="email_address" class="form-control"><br/>
-                                    Password<input type="password" name="password" ng-model="password" class="form-control"><br/>
+                                    Email Address<input type="email" name="email_address" ng-model="email_address" class="form-control" required><br/>
+                                    Password<input type="password" name="password" ng-model="password" class="form-control" required><br/>
                                     <button type="submit" id="loginInstructorBtn" class="btn btn-success">Login</button>
                                 </form>
                             </div>
@@ -246,7 +246,7 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
                                 <form method="post" ng-submit="signUpUser()">
-                                    Email Address<input type="text" name="email_address" ng-model="userData.password" class="form-control"><br/>
+                                    Email Address<input type="email" name="email_address" ng-model="userData.password" class="form-control"><br/>
                                     Password<input type="password" name="password" ng-model="userData.name" class="form-control"><br/>
                                     <button type="submit" id="loginBtn" class="btn btn-success" data-dismiss="modal">Login</button>
                                 </form>

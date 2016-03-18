@@ -1,12 +1,18 @@
 <div class="container">
 
-      <div class="row row-offcanvas row-offcanvas-right">
+      <div ng-class="canvasClass()">
 
         <div class="col-xs-12 col-sm-9">
           <p class="pull-right visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+            <button ng-click="toggleCanvas()" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Sidebar</button>
           </p>
           
+          <div class="form-group col-md-7 col-xs-12 col-sm-9 pull-right">
+            <div class="input-group">
+              <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+              <input class="form-control" type="text" placeholder="Filter by...  (name code faculty venue status time...)" ng-model="search_classes">
+            </div>
+          </div>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -21,7 +27,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="class in classes"> 
+
+                <tr ng-repeat="class in classes | filter : search_classes"> 
                   <td>{{class.class_code}}</td>
                   <td>{{class.class_name}}</td>
                   <td><button ng-class="displayStatus(class.status)">{{class.status}}</button></td>

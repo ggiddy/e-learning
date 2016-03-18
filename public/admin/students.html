@@ -1,11 +1,21 @@
 <div class="container">
 
-      <div class="row row-offcanvas row-offcanvas-right">
+      <div ng-class="canvasClass()">
 
         <div class="col-xs-12 col-sm-9">
           <p class="pull-right visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+            <button ng-click="toggleCanvas()" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Sidebar</button>
           </p>
+
+          <form class="form-inline">
+
+            <div class="form-group pull-right">
+              <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+                <input class="form-control" type="text" placeholder="Filter..." ng-model="search_students">
+              </div>
+            </div>
+          </form>
        
           <div class="table-responsive">
             <table class="table table-striped">
@@ -21,7 +31,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="student in students"> 
+                <tr ng-repeat="student in students | filter : search_students"> 
                   <td>{{student.first_name}}</td>
                   <td>{{student.last_name}}</td>
                   <td>{{student.admission_no}}</td>

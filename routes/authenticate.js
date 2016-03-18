@@ -75,7 +75,7 @@ router.post('/expert/signup', function(req, res) {
 
 /* This route logs in a student into the system */
 router.post('/student/login', function(req,res){
-    Student.findOne({admission_no: req.body.admission_no})
+    Student.findOne({admission_no: req.body.admission_no.toUpperCase()})
             .select('first_name last_name user_type email_address admission_no password status')
             .exec(function(err, student){
         if(err){

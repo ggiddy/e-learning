@@ -1,10 +1,10 @@
 <div class="container">
 
-      <div class="row row-offcanvas row-offcanvas-right">
+      <div ng-class="canvasClass()">
 
         <div class="col-xs-12 col-sm-9">
           <p class="pull-right visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+            <button ng-click="toggleCanvas()" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Sidebar</button>
           </p>
           <p><button data-toggle="modal" data-target="#expertSignupForm" class="btn btn-sm btn-success">{{"Add New Expert"}}</button></p>
           <div class="table-responsive">

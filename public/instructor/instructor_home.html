@@ -1,8 +1,8 @@
 <div class="container">
-      <div class="row row-offcanvas row-offcanvas-right">
+      <div ng-class="canvasClass()">
         <div class="col-xs-12 col-sm-9">
           <p class="pull-right visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+            <button ng-click="toggleCanvas()" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Sidebar</button>
           </p>
           
           <div class="row" ng-show="has_cls">
@@ -132,85 +132,10 @@
       </div><!--/row-->
     </div><!--/.container-->
 
-    <!--Modal that contains the form to edit class details-->
-        <div ng-controller="adminController" class="modal fade" id="editClassForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                  <h4 class="modal-title text-center" id="myModalLabel">Edit Class</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="container form-horizontal">
-                        <div class="row">
-                            <div class="col-sm-6 col-md-4">
-                                <form method="post" ng-submit="signUpAdmin()">
-                                    Class Code<input type="text" name="class_code" ng-model="userData.first_name" class="form-control"><br/>
-                                    Class Name<input type="text" name="class_name" ng-model="userData.last_name" class="form-control"><br/>
-                                    Class Duration<input type="text" name="class_duration" ng-model="userData.email_address" class="form-control"><br/>
-                                    Start-time<input type="type" name="class_time" ng-model="userData.password" class="form-control"><br/>
-                                    Lecturer<input type="password" name="password" ng-model="userData.password" class="form-control"><br/>
-                                    <button type="submit" id="submitBtn" class="btn btn-danger">Submit</button>
-                                </form>
-                            </div>
-                        </div> 
-                    </div>                    
-                </div>
-              </div>
-            </div>
-            <script>
-                
-                //triggered when modal is about to be shown
-                $('#editClassForm').on('show.bs.modal', function(e) {
-
-                    //get data-id attribute of the clicked element
-                    var classId = $(e.relatedTarget).data('id');
-                    
-                    //populate the textbox
-                    $(e.currentTarget).find('input[name="class_code"]').val(classId.class_code);
-                    $(e.currentTarget).find('input[name="class_name"]').val(classId.class_name);
-                    $(e.currentTarget).find('input[name="class_duaration"]').val(classId.class_duration);
-                    $(e.currentTarget).find('input[name="class_time"]').val(classId.class_time);
-                });
-                
-                $('#submitBtn').click(function(){ $('#editClassForm').modal('hide'); });
-            </script>
-        </div>
-    
-    <!--Modal that contains the form to add a new class-->
-        <div ng-controller="adminController" class="modal fade" id="newClass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                  <h4 class="modal-title text-center" id="myModalLabel">New Class</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="container form-horizontal">
-                        <div class="row">
-                            <div class="col-sm-6 col-md-4">
-                                <form method="post" ng-submit="newClass()">
-                                    Class Code<input type="text" name="class_code" ng-model="classData.class_code" class="form-control"><br/>
-                                    Class Name<input type="text" name="class_name" ng-model="classData.class_name" class="form-control"><br/>
-                                    Class Duration<input type="text" name="class_duration" ng-model="classData.class_duration" class="form-control"><br/>
-                                    Start-time<input type="type" name="class_time" ng-model="classData.class_time" class="form-control"><br/>
-                                    Class Venue<input type="text" name="class_venue" ng-model="classData.class_venue" class="form-control"><br/>
-                                    <button type="submit" id="submitClassBtn" class="btn btn-danger">Submit</button>
-                                </form>
-                            </div>
-                        </div> 
-                    </div>                    
-                </div>
-              </div>
-            </div>
-            <script>
-                $('#submitClassBtn').click(function(){ $('#newClass').modal('hide'); });
-            </script>
-        </div>
     
     
     <!--Modal that contains the form to edit account settings-->
-        <div ng-controller="adminController" class="modal fade" id="accountSettings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="accountSettings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header success">
@@ -239,35 +164,6 @@
             </script>
         </div>
     
-    <!--Modal that contains the form to edit account settings-->
-        <div ng-controller="adminController" class="modal fade" id="noClasses" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header success">
-                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                  <h4 class="modal-title text-center" id="myModalLabel">Change Password</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="container form-horizontal">
-                        <div class="row">
-                            <div class="col-sm-6 col-md-4">
-                                <form method="post" ng-submit="changePassword()">
-                                    Old Password<input type="password" name="old_password" ng-model="adminData.old_password" class="form-control"><br/>
-                                    New Password<input type="password" name="new_password" ng-model="adminData.new_password" class="form-control"><br/>
-                                    Confirm New Password<input type="password" name="conf_password" class="form-control"><br/>
-                                    <button type="submit" id="submitChangesBtn" class="btn btn-danger">Confirm</button>
-                                </form>
-                            </div>
-                        </div> 
-                    </div>                    
-                </div>
-              </div>
-            </div>
-            <script>
-             
-                $('#submitChangesBtn').click(function(){ $('#accountSettings').modal('hide'); });
-            </script>
-        </div>
 
         <!--Modal that contains the form to select classes that instructor teaches-->
         <div class="modal fade" id="instructorChoices" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -278,6 +174,14 @@
                   <h4 class="modal-title text-center" id="myModalLabel">Select Classes</h4>
                 </div>
                 <div class="modal-body">
+
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+                      <input class="form-control" type="text" placeholder="Filter..." ng-model="search_classes">
+                    </div>
+                  </div>
+
                   <div class="table-responsive pre-scrollable">
                     <form ng-submit="selectInstructorClasses()">
                         <table class="table table-striped">
@@ -290,7 +194,7 @@
                             </tr>   
                           </thead>
                           <tbody>
-                            <tr ng-repeat="class in classes">
+                            <tr ng-repeat="class in classes | filter : search_classes">
                                 <td>{{class.class_code}}</td>
                                 <td>{{class.class_name}}</td>
                                 <td><input type="checkbox" ng-model="class.selected"/></td>
@@ -318,9 +222,17 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                  <h4 class="modal-title text-center" id="myModalLabel">Select Classes</h4>
+                  <h4 class="modal-title text-center" id="myModalLabel">Remove Classes</h4>
                 </div>
                 <div class="modal-body">
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+                    <input class="form-control" type="text" placeholder="Filter..." ng-model="remove_classes">
+                  </div>
+                </div>
+
                   <div class="table-responsive pre-scrollable">
                     <form ng-submit="removeClasses()">
                         <table class="table table-striped">
@@ -333,7 +245,7 @@
                             </tr>   
                           </thead>
                           <tbody>
-                            <tr ng-repeat="class in classes_taught">
+                            <tr ng-repeat="class in classes_taught | filter : remove_classes">
                                 <td>{{class.class_code}}</td>
                                 <td>{{class.class_name}}</td>
                                 <td><input type="checkbox" ng-model="class.selected"/></td>

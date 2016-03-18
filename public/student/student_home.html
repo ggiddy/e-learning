@@ -1,8 +1,8 @@
 <div class="container">
-      <div class="row row-offcanvas row-offcanvas-right">
+      <div ng-class="canvasClass()">
         <div class="col-xs-12 col-sm-9">
           <p class="pull-right visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+            <button ng-click="toggleCanvas()" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Sidebar</button>
           </p>
           
           <div class="row" ng-show="has_cls">
@@ -248,6 +248,14 @@
                   <h4 class="modal-title text-center" id="myModalLabel">Select Classes</h4>
                 </div>
                 <div class="modal-body">
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+                    <input class="form-control" type="text" placeholder="Filter..." ng-model="search_classes">
+                  </div>
+                </div>
+
                   <div class="table-responsive">
                     <form ng-submit="selectStudentClasses()">
                         <table class="table table-striped">
@@ -260,7 +268,7 @@
                             </tr>   
                           </thead>
                           <tbody>
-                            <tr ng-repeat="class in classes">
+                            <tr ng-repeat="class in classes | filter : search_classes">
                                 <td>{{class.class_code}}</td>
                                 <td>{{class.class_name}}</td>
                                 <td><input type="checkbox" ng-model="class.selected"/></td>
@@ -288,9 +296,17 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                  <h4 class="modal-title text-center" id="myModalLabel">Select Classes</h4>
+                  <h4 class="modal-title text-center" id="myModalLabel">Remove Classes</h4>
                 </div>
                 <div class="modal-body">
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+                    <input class="form-control" type="text" placeholder="Filter..." ng-model="remove_classes">
+                  </div>
+                </div>
+
                   <div class="table-responsive">
                     <form ng-submit="removeStudentClasses()">
                         <table class="table table-striped">
@@ -303,7 +319,7 @@
                             </tr>   
                           </thead>
                           <tbody>
-                            <tr ng-repeat="class in classes_taken">
+                            <tr ng-repeat="class in classes_taken | filter : remove_classes">
                                 <td>{{class.class_code}}</td>
                                 <td>{{class.class_name}}</td>
                                 <td><input type="checkbox" ng-model="class.selected"/></td>

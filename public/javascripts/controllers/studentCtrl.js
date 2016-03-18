@@ -117,5 +117,15 @@ studentCtrl.controller('studentController', function($scope, $window, Student, A
             $scope.message = data.message;
         });          
     };
+
+    $scope.isActive = false;
+
+    $scope.toggleCanvas = function(){
+        $scope.isActive = !$scope.isActive;
+    };
+
+    $scope.canvasClass = function(){
+        return $scope.isActive ? 'row row-offcanvas row-offcanvas-right active' : 'row row-offcanvas row-offcanvas-right';
+    }
    
 });

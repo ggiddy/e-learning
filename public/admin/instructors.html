@@ -1,12 +1,24 @@
 <div class="container">
 
-      <div class="row row-offcanvas row-offcanvas-right">
+      <div ng-class="canvasClass()">
 
         <div class="col-xs-12 col-sm-9">
           <p class="pull-right visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+            <button ng-click="toggleCanvas()" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Sidebar</button>
           </p>
-          <p><button data-toggle="modal" data-target="#instructorSignupForm" class="btn btn-sm btn-success">{{"Add New Instructor"}}</button></p>
+        
+          <form class="form-inline">
+            <button data-toggle="modal" data-target="#instructorSignupForm" class="btn btn-sm btn-success">{{"Add New Instructor"}}
+            </button>
+
+            <div class="form-group pull-right">
+              <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+                <input class="form-control" type="text" placeholder="Filter..." ng-model="search_instructors">
+              </div>
+            </div>
+          </form>
+
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -20,7 +32,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="instructor in instructors"> 
+                <tr ng-repeat="instructor in instructors | filter : search_instructors"> 
                   <td>{{instructor.first_name}}</td>
                   <td>{{instructor.last_name}}</td>
                   <td>{{instructor.email_address}}</td>

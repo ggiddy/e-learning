@@ -9,6 +9,10 @@ routes.config(function($routeProvider, $locationProvider){
                   templateUrl: 'home.html',
                   controller: 'mainController'
               })
+              .when('/login', {
+                  templateUrl: 'login.html',
+                  controller: 'mainController'
+              })
               //Routes that open personal account homepages of the different users
               .when('/admin', {
                   templateUrl: 'admin/admin_home.html',

@@ -1,10 +1,12 @@
 <div class="container">
       <div ng-class="canvasClass()">
+      <p class="pull-right visible-xs">
+        <button ng-click="toggleCanvas()" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas"><strong>Sidebar</strong></button>
+      </p>
         <div class="col-xs-12 col-sm-9">
-          <p class="pull-right visible-xs">
-            <button ng-click="toggleCanvas()" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Sidebar</button>
-          </p>
-          
+
+        
+
           <div class="row" ng-show="has_cls">
             <div ng-class="resizePanel()" ng-repeat="class in classes_taken">
                 <div class="panel-heading">
@@ -328,7 +330,7 @@
                           </tbody>
                         </table>
                         <div class="text-center">
-                            <button type="submit" id="submitStudentRemoved" class="btn btn-sm btn-danger">Remove</button> 
+                            <p><button type="submit" id="submitStudentRemoved" class="btn btn-sm btn-danger">Remove</button></p>
                         </div>
                     </form>
                   </div>               

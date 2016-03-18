@@ -1,5 +1,8 @@
 <div class="container">
-      <div class="row row-offcanvas row-offcanvas-right">
+      <div ng-class="canvasClass()">
+      <p class="pull-right visible-xs">
+          <button ng-click="toggleCanvas()" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Sidebar</button>
+        </p>
         <div id="uploaddownload" class="col-xs-12 col-sm-9">
           <div id="upload" class="collapse">
             <form method='post' 

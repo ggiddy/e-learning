@@ -1,6 +1,6 @@
 /* global angular */
 
-var adminCtrl = angular.module('adminCtrl', ['adminService']);
+var adminCtrl = angular.module('adminCtrl', ['adminService', 'ngAnimate']);
 
 adminCtrl.controller('adminController', function($scope, $window, $location, Auth, Admin, socketio){
     
@@ -30,8 +30,8 @@ adminCtrl.controller('adminController', function($scope, $window, $location, Aut
     //object that holds the data for password changing
     $scope.adminData = {admin_id: '', old_password: '', new_password: ''};
     
-
-
+    //array to hold the alerts to be displayed on the admin page
+    $scope.alerts = [];
 
     //socket.io event listeners
 
@@ -169,7 +169,12 @@ adminCtrl.controller('adminController', function($scope, $window, $location, Aut
             $scope.message = data.message;
             
             //show an alert that the password has sucessfully changed or otherwise
-            alert($scope.message);
+            if(data.success){
+                $scope.addAlert('success', $scope.message);
+            } else {
+                $scope.addAlert('danger', $scope.message);
+            }
+            
             return;
         });  
     };
@@ -184,7 +189,12 @@ adminCtrl.controller('adminController', function($scope, $window, $location, Aut
             $scope.message = data.message;
             
             //show an alert that the password has sucessfully changed or otherwise
-            alert($scope.message);
+            if(data.success){
+                $scope.addAlert('success', $scope.message);
+            } else {
+                $scope.addAlert('danger', $scope.message);
+            }
+
             return;
         });  
     };
@@ -199,7 +209,12 @@ adminCtrl.controller('adminController', function($scope, $window, $location, Aut
             $scope.message = data.message;
             
             //show an alert that the password has sucessfully changed or otherwise
-            alert($scope.message);
+            if(data.success){
+                $scope.addAlert('success', $scope.message);
+            } else {
+                $scope.addAlert('danger', $scope.message);
+            }
+
             return;
         });  
     };
@@ -214,7 +229,12 @@ adminCtrl.controller('adminController', function($scope, $window, $location, Aut
             $scope.message = data.message;
             
             //show an alert that the password has sucessfully changed or otherwise
-            alert($scope.message);
+            if(data.success){
+                $scope.addAlert('success', $scope.message);
+            } else {
+                $scope.addAlert('danger', $scope.message);
+            }
+
             return;
         });  
     };
@@ -251,7 +271,7 @@ adminCtrl.controller('adminController', function($scope, $window, $location, Aut
             $scope.displayStatus(data.status);
 
             //alert the admin of the success of their change archiving/restoring action
-            alert($scope.message);
+            $scope.addAlert('success', $scope.message);
         });  
     };
 
@@ -286,9 +306,49 @@ adminCtrl.controller('adminController', function($scope, $window, $location, Aut
             $scope.displayStatus(data.status);
 
             //alert the admin of the success of their change archiving/restoring action
-            alert($scope.message);
+            if(data.success){
+                $scope.addAlert('success', $scope.message);
+            } else {
+                $scope.addAlert('danger', $scope.message);
+            }
         });  
     };
+
+    /**
+     * This method archives an student's account
+     *
+     *@param{string} student_id The id of the student's account to be archived.
+     *@param{string} status The status of the student.
+     *@return{void}  
+     */
+    $scope.archiveStudent = function(student_id, status){
+
+        //set the variable that takes the server message to empty
+        $scope.message = '';
+
+        //initialize the status to inactive
+        var data = {status: 'Inactive'}; //if status is inactive, the admin account will be restored, else it will be archived
+        
+        if(status === 'Active'){
+
+            //if admin's status is active, set the status field to null.
+            data.status = null;
+        }
+        
+        //Call the service that archives/restores an student's account, pass the student's id and the current status as parameters
+        Admin.archiveStudentAccount(student_id, data).success(function(data){
+
+            //set the scope message variable to the message received from the server
+            $scope.message = data.message;
+
+            //the the method the change the color of the buttons and the labels after status has changed.
+            $scope.displayStatus(data.status);
+
+            //alert the student of the success of their change archiving/restoring action
+            $scope.addAlert('success', $scope.message);
+        });  
+    };
+
     
     /**
      * This method archives a class.
@@ -321,7 +381,11 @@ adminCtrl.controller('adminController', function($scope, $window, $location, Aut
             $scope.displayStatus(data.status);
 
             //alert the admin of the success of their change archiving/restoring action
-            alert($scope.message);
+            if(data.success){
+                $scope.addAlert('success', $scope.message);
+            } else {
+                $scope.addAlert('danger', $scope.message);
+            }
         });  
     };
 
@@ -382,6 +446,24 @@ adminCtrl.controller('adminController', function($scope, $window, $location, Aut
     //assign classes depending on whether the sidebar will be shown or not.
     $scope.canvasClass = function(){
         return $scope.isActive ? 'row row-offcanvas row-offcanvas-right active' : 'row row-offcanvas row-offcanvas-right';
-    }
-    
+    };
+   
+    /**
+     *This function is used to push alerts onto the alerts array.
+     */
+    $scope.addAlert = function(type, message) {
+
+        //add the new alert into the array of alerts to be displayed.
+        $scope.alerts.push({type: type, msg: message});
+    };
+
+    /**
+     *This function closes the alert
+     */
+    $scope.closeAlert = function(index) {
+        
+        //remove the alert from the array to avoid showing previous alerts
+        $scope.alerts.splice(0); 
+    };
+
 });

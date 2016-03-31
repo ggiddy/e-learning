@@ -1,8 +1,11 @@
 <div class="container">
-
+    
       <div ng-class="canvasClass()">
 
         <div class="col-xs-12 col-sm-9">
+
+         <uib-alert ng-repeat="alert in alerts" dismiss-on-timeout="2000" type="{{alert.type}}" close="closeAlert()">{{alert.msg}}</uib-alert>
+
           <p class="pull-right visible-xs">
             <button ng-click="toggleCanvas()" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Sidebar</button>
           </p>
@@ -13,6 +16,7 @@
               <input class="form-control" type="text" placeholder="Filter by...  (name code faculty venue status time...)" ng-model="search_classes">
             </div>
           </div>
+
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>

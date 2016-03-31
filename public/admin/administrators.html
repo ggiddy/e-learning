@@ -3,6 +3,9 @@
       <div ng-class="canvasClass()">
 
         <div class="col-xs-12 col-sm-9">
+
+        <uib-alert ng-repeat="alert in alerts" dismiss-on-timeout="2000" type="{{alert.type}}" close="closeAlert()">{{alert.msg}}</uib-alert>
+
           <p class="pull-right visible-xs">
             <button ng-click="toggleCanvas()" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Sidebar</button>
           </p>
@@ -44,7 +47,7 @@
               </tbody>
             </table>
           </div>
-
+          
         </div><!--/span-->
 
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
@@ -285,7 +288,7 @@
         </div>
     
     <!--Modal that carries the admin sign up form-->
-        <div class="modal fade" id="adminSignupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div ng-controller="createAdminController" class="modal fade" id="adminSignupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -297,11 +300,11 @@
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
                                 <form method="post" ng-submit="signUpAdmin()">
-                                    First Name<input type="text" name="first_name" ng-model="userData.first_name" class="form-control"><br/>
-                                    Last Name<input type="text" name="last_name" ng-model="userData.last_name" class="form-control"><br/>
-                                    Email Address<input type="text" name="email_address" ng-model="userData.email_address" class="form-control"><br/>
-                                    Password<input type="password" name="password" ng-model="userData.password" class="form-control"><br/>
-                                    <button type="submit" id="submitBtn" class="btn btn-danger">Signup</button>
+                                    First Name<input type="text" name="first_name" ng-model="userData.first_name" class="form-control" required><br/>
+                                    Last Name<input type="text" name="last_name" ng-model="userData.last_name" class="form-control" required><br/>
+                                    Email Address<input type="email" name="email_address" ng-model="userData.email_address" class="form-control" required><br/>
+                                    Password<input type="password" name="password" ng-model="userData.password" class="form-control" required><br/>
+                                    <button type="submit" id="signAdminBtn" class="btn btn-danger">Signup</button>
                                 </form>
                             </div>
                         </div> 
@@ -310,6 +313,6 @@
               </div>
             </div>
             <script>
-                $('#submitBtn').click(function(){ $('#adminSignupForm').modal('hide'); });
+                $('#signAdminBtn').click(function(){ $('#adminSignupForm').modal('hide'); });
             </script>
         </div>

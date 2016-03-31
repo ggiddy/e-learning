@@ -1,9 +1,16 @@
-<div class="jumbotron text-center" ng-show="!loggedIn">
-    <div>
-        <h1>Signup</h1>
-    </div>
-    <div>
-        <p>Signup now and begin learning.</p>
-        <a href="#/login" class="btn btn-primary">Login</a>
-    </div>
+<div class="row">
+	<div class="col-md-12" ng-show="!loggedIn">
+		<uib-alert ng-repeat="alert in alerts"  type="{{alert.type}}" dismiss-on-timeout="2000" close="closeAlert()">{{alert.msg}}</uib-alert>
+	</div>
+
+
+	<div class="jumbotron text-center" ng-show="!loggedIn">
+	    <div>
+	        <h1>Signup</h1>
+	    </div>
+	    <div>
+	        <p>Signup now and begin learning.</p>
+	        <a href="#/login" class="btn btn-primary">Login</a>
+	    </div>
+	</div>
 </div>

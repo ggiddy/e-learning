@@ -242,7 +242,7 @@ module.exports = function(io){
             admin.password = auth.createHash(temp_password);
             admin.save(function(err){
                 if(err){
-                    return res.status(500).send(err);
+                    return res.json({success: false, message: 'An error occured resetting your password'});
                 }
                 return res.json({success: true, message: 'Successfully reset password'});
             });
@@ -374,6 +374,37 @@ module.exports = function(io){
                     success: true, 
                     message: message,
                     status: instructor.status
+                });
+            });
+        });
+    });
+
+
+    router.patch('/archive_student/:id', function(req, res){
+        
+        //first select the user with the specified id
+        Student.findById(req.params.id, function(err, student){
+            if(err){
+                return res.status(500).send(err);
+            }
+            
+            if(req.body.status){
+                student.status = 'Active';
+                var message = 'Student: ' + student.email_address + ' successfully restored';
+            } else {
+                student.status = 'Inactive';
+                message = 'Student: ' + student.email_address + ' successfully archived';
+            }
+            
+            student.save(function(err){
+                if(err){
+                    return res.status(500).send(err);
+                }
+                
+                return res.json({
+                    success: true, 
+                    message: message,
+                    status: student.status
                 });
             });
         });

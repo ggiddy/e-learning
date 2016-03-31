@@ -90,7 +90,7 @@ router.post('/student/login', function(req,res){
         if(student.status !== 'Active'){
             return res.json({
                 success: false, 
-                message: 'Your accout is inactive. Please consult an admin'
+                message: 'Your accout has been deactivated.\nPlease consult an administrator.'
             });
         }
         
@@ -116,7 +116,7 @@ router.post('/student/login', function(req,res){
 /* This route logs in an admin into the system */
 router.post('/admin/login', function(req,res){
     Admin.findOne({email_address: req.body.email_address.toLowerCase()})
-            .select('first_name last_name email_address user_type password')
+            .select('first_name last_name email_address user_type password status')
             .exec(function(err, admin){
         if(err){
             return res.send(err);
@@ -133,7 +133,13 @@ router.post('/admin/login', function(req,res){
                 message: "Invalid password provided"
             });
         }
-        
+        if(admin.status !== 'Active'){
+            return res.json({
+                success: false, 
+                message: 'Your accout has been deactivated.\nPlease consult an administrator.'
+            });
+        }
+
         console.log('Successfully logged in user: ' + admin.email_address);
         
         //give the user a token that will be stored in the browser and used for authentication
@@ -154,7 +160,7 @@ router.post('/admin/login', function(req,res){
 /* This route logs in a instructor into the system */
 router.post('/instructor/login', function(req,res){
     Instructor.findOne({email_address: req.body.email_address.toLowerCase()})
-            .select('first_name last_name email_address user_type password')
+            .select('first_name last_name email_address user_type password status')
             .exec(function(err, instructor){
         if(err){
             return res.send(err);
@@ -164,6 +170,12 @@ router.post('/instructor/login', function(req,res){
         }
         if(!isValidPassword(instructor, req.body.password)){
             return res.json({success: false, message: "Invalid password provided"});
+        }
+        if(instructor.status !== 'Active'){
+            return res.json({
+                success: false, 
+                message: 'Your accout has been deactivated.\nPlease consult an administrator.'
+            });
         }
         
         console.log('Successfully logged in user: ' + instructor.email_address);
@@ -196,6 +208,12 @@ router.post('/expert/login', function(req,res){
         }
         if(!isValidPassword(expert, req.body.password)){
             return res.json({success: false, message: "Invalid password provided"});
+        }
+        if(expert.status !== 'Active'){
+            return res.json({
+                success: false, 
+                message: 'Your accout has been deactivated.\nPlease consult an administrator.'
+            });
         }
         
         console.log('Successfully logged in user: ' + expert.email_address);

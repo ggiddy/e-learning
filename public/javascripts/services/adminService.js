@@ -61,6 +61,10 @@ adminService.factory('Admin', function($http){
         return $http.patch('/admin/archive_instructor/' + id, data);
     };
 
+    adminFactory.archiveStudentAccount = function(id, data){
+        return $http.patch('/admin/archive_student/' + id, data);
+    };
+
     adminFactory.archiveCls = function(id, data){
         return $http.patch('/admin/archive_class/' + id, data);
     };

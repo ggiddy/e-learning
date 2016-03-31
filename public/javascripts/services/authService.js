@@ -15,9 +15,7 @@ authService.factory('Auth', function($q, $http, authToken){
    authFactory.loginAdmin = function(email_address, password){
         return $http.post('/auth/admin/login', {email_address: email_address, password: password})
                .success(function(data){
-                    if(data.message){
-                        alert(data.message);
-                    }
+                    
                    authToken.setToken(data.token);
                    
                    var user_data = {
@@ -42,9 +40,6 @@ authService.factory('Auth', function($q, $http, authToken){
    authFactory.loginStudent = function(admission_no, password){
         return $http.post('/auth/student/login', {admission_no: admission_no, password: password})
                .success(function(data){
-                   if(data.message){
-                       alert(data.message);
-                   }
                    
                    authToken.setToken(data.token);
                    
@@ -70,9 +65,6 @@ authService.factory('Auth', function($q, $http, authToken){
    authFactory.loginInstructor = function(email_address, password){
     return $http.post('/auth/instructor/login', {email_address: email_address, password: password})
       .success(function(data){
-          if(data.message){
-              alert(data.message);
-          }
 
         authToken.setToken(data.token);
          

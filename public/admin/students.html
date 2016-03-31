@@ -3,6 +3,9 @@
       <div ng-class="canvasClass()">
 
         <div class="col-xs-12 col-sm-9">
+
+        <uib-alert ng-repeat="alert in alerts" dismiss-on-timeout="2000" type="{{alert.type}}" close="closeAlert()">{{alert.msg}}</uib-alert>
+
           <p class="pull-right visible-xs">
             <button ng-click="toggleCanvas()" type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Sidebar</button>
           </p>
@@ -36,9 +39,9 @@
                   <td>{{student.last_name}}</td>
                   <td>{{student.admission_no}}</td>
                   <td>{{student.email_address}}</td>
-                  <td><button class="btn btn-sm btn-info">{{"Active"}}</button></td>
+                  <td><button ng-class="displayStatus(student.status)">{{student.status}}</button></td>
                   <td><button class="btn btn-sm btn-default" ng-click="resetStudentPwd(student._id)">{{"Reset Password"}}</button></td>
-                  <td><a href="" class="btn btn-sm btn-danger" ng-click="">Archive</a></td>
+                  <td><a href="" ng-class="archiveBtnColor(student.status)" ng-click="archiveStudent(student._id, student.status); clicked(student, $event)">{{action}}</a></td>
                 </tr>
               </tbody>
             </table>

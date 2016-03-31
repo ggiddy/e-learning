@@ -6,7 +6,7 @@ module.exports = function(io){
     var router = express.Router();
 
     router.get('/', function(req, res, next){
-        return res.render('index', {title: 'User Story'});
+        return res.render('index', {title: 'e-learning'});
     });
 
     return router;
